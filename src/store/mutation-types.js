@@ -1,0 +1,1 @@
+export const SWITCH_TO_ANOTHER = 'SWITCH_TO_ANOTHER'
