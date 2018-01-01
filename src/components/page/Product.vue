@@ -51,20 +51,24 @@
   #product .el-tabs--border-card>.el-tabs__header {
     width: 100%;
     position: fixed;
+    border: 1px solid #d8dce5;
+    margin:-1px 2px;
     top: 119px;
     z-index: 10;
   }
 
   #product .comment-Body .el-table__header-wrapper {
-    top: 158px;
+    margin-top: calc(39px - 15px);
     z-index: 10;
     position: fixed;
   }
 
   #product .comment-Body .el-table__body-wrapper {
-    top: 65px;
+    margin-top: 65px;
   }
-
+  #product .el-pagination{
+    text-align: center;
+  }
 </style>
 <template>
   <div id="product">
@@ -77,22 +81,21 @@
           </div>
         </el-col>
         <el-col class="comment-Chin-list">
-          <el-date-picker v-model="dateTime" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" size="small"
-            @change="chinSelectChanged({name:'dateTime',value:dateTime})"></el-date-picker>
+          <el-date-picker v-model="params.dateTime" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" size="small"></el-date-picker>
           <span>
-            <el-select v-model="productStyle" @change="chinSelectChanged({name:'productStyle',value:productStyle})">
+            <el-select v-model="params.productStyle">
               <el-option v-for="item in chinOptions[0]" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </span>
           <span>
-            <el-select v-model="extraShown" @change="chinSelectChanged({name:'extraShown',value:extraShown})">
+            <el-select v-model="params.extraShown">
               <el-option v-for="item in chinOptions[1]" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </span>
           <span>
-            <el-select v-model="timeLen" @change="chinSelectChanged({name:'timeLen',value:timeLen})">
+            <el-select v-model="params.timeLen">
               <el-option v-for="item in chinOptions[2]" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
@@ -100,15 +103,15 @@
         </el-col>
       </el-row>
     </div>
-    <el-tabs class="comment-Body" v-model="activeName" @tab-click="tabMenuSelect" type="border-card">
+    <el-tabs class="comment-Body" v-model="params.name" @tab-click="tabMenuSelect" type="border-card">
       <el-tab-pane label="热销产品" name="hotseller">
         <commonTable :tableData="tableBody" :tableTitle="tableTitle" :tableExpend="tableExpend"></commonTable>
       </el-tab-pane>
       <el-tab-pane label="热搜产品" name="search">
         <commonTable :tableData="tableBody" :tableTitle="tableTitle" :tableExpend="tableExpend"></commonTable>
       </el-tab-pane>
-      <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper"
-        :total="400">
+      <el-pagination @size-change="sizeChange" :page-size="params.pageSize" @current-change="currentChange" :current-page="params.pageCurrent"
+        :page-sizes="[20, 50, 100]" :total="tableTotal" layout="total, sizes, prev, pager, next, jumper">
       </el-pagination>
     </el-tabs>
   </div>
@@ -128,75 +131,62 @@
     },
     computed: {
       chinOptions() {
-        return this.$store.state.products.chinOptions
+        return this.$store.getters.chinOptions
       },
       tableTitle() {
         return this.$store.state.products.tableData.tableTitle
       },
       tableBody() {
         return this.$store.state.products.tableData.tableBody
+      },
+      tableTotal() {
+        return this.$store.state.products.tableData.tableTotal
       }
     },
     data() {
       return {
-        productStyle: "牛仔裤",
-        extraShown: '热销排名',
-        dateTime: new Date(Date.now() - 8.64e7),
-        timeLen: 7,
+        params: {
+          name: "hotseller",
+          productStyle: "牛仔裤",
+          extraShown: '热销排名',
+          dateTime: new Date(Date.now() - 8.64e7),
+          timeLen: 7,
+          pageSize: 20,
+          pageCurrent: 1
+        },
         chinData: [],
-        tableExpend: "",
-        TableTotal: 20,
-        activeName: "hotseller"
+        tableExpend: ""
+      }
+    },
+    watch: {
+      params: {
+        handler: 'chinSelectChanged',
+        deep: true
       }
     },
     created() {
       this.tabMenuSelect({
-        name: this.activeName
+        name: this.params.name
       })
       this.$store.dispatch('fetchProductList')
     },
     methods: {
-      getChinOptions(value) {
-        let b = [
-          ['牛仔裤', '休闲裤', '打底裤'],
-          ['热销排名', ...value, '支付子订单数'],
-          [7, 14]
-        ]
-        return b.map(function (item, key) {
-          return item.map(function (item) {
-            if (typeof item == 'number') {
-              return {
-                label: `近${item}天`,
-                value: item
-              }
-            } else {
-              return {
-                label: item,
-                value: item
-              }
-            }
-
-          })
-        })
-      },
       tabMenuSelect(v) {
-        var a = v.name == 'search' ? ['流量指数', '搜索人气'] : ['支付转化率指数', '交易增长幅度']
-        var c = this.getChinOptions(a)
-        this.$store.commit('TAB_MENU_SELECT', v)
-        this.$store.commit('GET_CHIN_OPTIONS', c)
-        this.$store.commit('SET_CHIN_SELECT', {
-          name: 'extraShown',
-          value: '热销排名'
-        })
-        this.extraShown = '热销排名'
-        this.$store.dispatch('fetchProductList')
-
+        this.params.extraShown = '热销排名'
+        this.$store.commit('SET_CHIN_SELECT', this.params)
       },
-      chinSelectChanged(v) {
-        console.log(this.dateTime)
-        this.$store.commit('SET_CHIN_SELECT', v)
+      chinSelectChanged() {
+        this.$store.commit('SET_CHIN_SELECT', this.params)
         this.$store.dispatch('fetchProductList')
-      }
+      },
+      sizeChange(val) {
+        this.params.pageSize = val
+        this.$store.commit('SET_CHIN_SELECT', this.params)
+      },
+      currentChange(val) {
+        this.params.pageCurrent = val
+        this.$store.commit('SET_CHIN_SELECT', this.params)
+      },
     }
   }
 

@@ -1,88 +1,62 @@
 <style>
-
-
+.article-title{
+  width:200px;
+}
+.article-piture{
+  width:200px;
+  height:100px;
+  border:1px solid #DCDFE6;
+}
+.HomePage .v-note-wrapper{
+z-index: 0;
+}
 </style>
 <template>
   <div class="HomePage">
     <common-header activeIndex="/"></common-header>
-    <br>
-    <br>
-    <br>
-    <br>
-    <el-date-picker v-model="week.value" :type="week.type" :format="week.format" :placeholder="week.placeholder">
-    </el-date-picker>
-    <el-date-picker v-model="month.value" :type="month.type" :format="month.format" :placeholder="month.placeholder">
-    </el-date-picker>
-    <el-button icon="el-icon-plus" @click="dialogFormVisible = true">增加</el-button>
-    <el-dialog title="文档信息" :visible.sync="dialogFormVisible">
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="活动名称">
-          <el-input v-model="form.name"></el-input>
+    <div style="margin:100px auto;width:60%;">
+      <el-date-picker v-model="week.value" :type="week.type" :format="week.format" :placeholder="week.placeholder">
+      </el-date-picker>
+      <el-button icon="el-icon-plus" @click="show = !show">增加</el-button>
+      <el-table v-show="!show" :data="tableData" style="width: 100%">
+        <el-table-column type="index" width="50">
+        </el-table-column>
+        <el-table-column prop="date" label="上传时间" width="150">
+        </el-table-column>
+        <el-table-column prop="title" label="标题" width="200">
+        </el-table-column>
+        <el-table-column prop="author" label="发布者" width="120">
+        </el-table-column>
+        <el-table-column prop="status" label="状态" width="120">
+        </el-table-column>
+        <el-table-column prop="verifier" label="审核人" width="100">
+        </el-table-column>
+        <el-table-column prop="amount" label="阅读人数" width="120">
+        </el-table-column>
+        <el-table-column label="操作" width="150">
+          <template slot-scope="scope">
+            <i @click="handleClick(scope.row)" class="el-icon-view"></i>
+            <i class="el-icon-edit-outline"></i>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-form v-show="show" ref="form" :model="form" label-width="80px">
+        <el-form-item label="标题">
+          <el-input class="article-title" v-model="form.title"></el-input>
         </el-form-item>
-        <el-form-item label="活动区域">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="活动时间">
-          <el-col :span="11">
-            <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
-          </el-col>
-          <el-col class="line" :span="2">-</el-col>
-          <el-col :span="11">
-            <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="即时配送">
-          <el-switch v-model="form.delivery"></el-switch>
-        </el-form-item>
-        <el-form-item label="活动性质">
-          <el-checkbox-group v-model="form.type">
-            <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-            <el-checkbox label="地推活动" name="type"></el-checkbox>
-            <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="特殊资源">
-          <el-radio-group v-model="form.resource">
-            <el-radio label="线上品牌商赞助"></el-radio>
-            <el-radio label="线下场地免费"></el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="活动形式">
-          <el-input type="textarea" v-model="form.desc"></el-input>
+        <!-- <el-form-item label="文章主图">
+          <el-upload class="article-piture" action="" list-type="picture"></el-upload>
+        </el-form-item> -->
+        <el-form-item label="编辑文件">
+           <mavon-editor @imgAdd="imageAdd" v-model="form.value"></mavon-editor>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="dialogFormVisible = false">立即创建</el-button>
+          <el-button type="primary" @click="creatArticle">立即创建</el-button>
           <el-button>取消</el-button>
         </el-form-item>
       </el-form>
-    </el-dialog>
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column type="index" width="50">
-      </el-table-column>
-      <el-table-column prop="date" label="上传时间" width="150">
-      </el-table-column>
-      <el-table-column prop="title" label="标题" width="200">
-      </el-table-column>
-      <el-table-column prop="author" label="发布者" width="120">
-      </el-table-column>
-      <el-table-column prop="status" label="状态" width="120">
-      </el-table-column>
-      <el-table-column prop="verifier" label="审核人" width="100">
-      </el-table-column>
-      <el-table-column prop="amount" label="阅读人数" width="120">
-      </el-table-column>
-      <el-table-column label="操作" width="150">
-        <template slot-scope="scope">
-          <i @click="handleClick(scope.row)" class="el-icon-view"></i>
-          <i class="el-icon-edit-outline"></i>
-        </template>
-      </el-table-column>
-    </el-table>
-
+    </div>
   </div>
 </template>
 <script>
@@ -92,7 +66,6 @@
       commonHeader
     },
     name: 'HomePage',
-
     data() {
       return {
         activeIndex: '/',
@@ -102,22 +75,11 @@
           type: 'week',
           value: ''
         },
-        month: {
-          placeholder: '选择月',
-          format: 'yyyy 第 MM 月',
-          type: 'month',
-          value: ''
-        },
-        dialogFormVisible: false,
+        show: false,
         form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+          title: '',
+          author: '',
+          value:''
         },
         tableData: [{
           date: '2016-05-03',
@@ -163,8 +125,24 @@
         console.log(key, keyPath);
       },
       handleClick(row) {
-
         console.log(row)
+      },
+      creatArticle(){
+        // 提交文档信息到服务
+        console.log(this.$refs.form.model)
+        var information = this.$refs.form.model
+        this.$http.post('weekreport/editor',information, {headers: {'Content-Type': 'multipart/form-data'}}).then((response)=>{
+          console.log(response)
+        })
+      },
+      imageAdd(pos, $file){
+        // 添加图片 并上传到七牛云 返回链接
+        console.log(pos, $file)
+         var formdata = new FormData()
+           formdata.append('image', $file)
+        this.$http.post('qiniu/image',formdata).then((response) =>{
+          console.log(response)
+        })
       }
     }
   }

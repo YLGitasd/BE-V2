@@ -156,6 +156,7 @@
             console.log('验证成功')
             this.$http.post('property-deal', this.ruleForm2).then(response => {
               console.log(response)
+              this.$notify({title:'录入信息',message: response.data})
             })
           } else {
             console.log('error submit!!');
