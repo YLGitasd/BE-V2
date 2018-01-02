@@ -104,10 +104,6 @@ table 模板为多个类目共用，每个类目的数据结构又不相同这�
       tableTitle: {
         type: Array,
         required: true
-      },
-      tableExpend: {
-        type: String,
-        required: true
       }
     },
     methods: {

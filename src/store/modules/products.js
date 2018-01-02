@@ -1,6 +1,5 @@
 import api from '../api'
 export const TAB_MENU_SELECT = 'TAB_MENU_SELECT'
-export const GET_CHIN_OPTIONS = 'GET_CHIN_OPTIONS'
 export const SET_CHIN_SELECT = 'SET_CHIN_SELECT'
 export const SET_TABLE_DATA = 'SET_TABLE_DATA'
 const getters = {
@@ -43,9 +42,6 @@ const state = {
 const mutations = {
   [TAB_MENU_SELECT] (state, option) {
     state.params.name = option.name
-  },
-  [GET_CHIN_OPTIONS] (state, options) {
-    state.chinOptions = options
   },
   [SET_CHIN_SELECT] (state, params) {
     for (let k in params) {

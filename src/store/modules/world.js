@@ -1,16 +1,33 @@
 import api from '../api'
 export const TAB_MENU_SELECT = 'TAB_MENU_SELECT'
-export const GET_CHIN_OPTIONS = 'GET_CHIN_OPTIONS'
 export const SET_CHIN_SELECT = 'SET_CHIN_SELECT'
 export const SET_TABLE_DATA = 'SET_TABLE_DATA'
+export const SET_CHIN_OPTIONS = 'SET_CHIN_OPTIONS'
+const getters = {
+  chinOptionWorld: (state) => {
+    var prodAnd = [{label: '牛仔裤', value: '牛仔裤'}, {label: '休闲裤', value: '休闲裤'}, {label: '打底裤', value: '打底裤'}]
+    var timelen = [{label: '第7天', value: 7}, {label: '第14天', value: 14}]
+    var attribute = state.chinOptions[1]
+    var extraShown = []
+    var option = state.chinOptions[0]
+    for (var k in option) {
+      if (option[k][0] === state.params.attribute) {
+        extraShown = option[k][1]
+      }
+    }
+    return [prodAnd, attribute, extraShown, timelen]
+  }
+}
 const state = {
   params: {
     name: 'concern',
-    dateTime: api.formaterDate(Date.now() - 8.64e7, 'YYYY-MM-DD'),
     productStyle: '牛仔裤',
-    attribute: '热搜搜索词',
     extraShown: '热销排名',
-    timeLen: 7
+    attribute: '热搜搜索词',
+    dateTime: api.formaterDate(Date.now() - 8.64e7, 'YYYY-MM-DD'),
+    timeLen: 7,
+    pageSize: 20,
+    pageCurrent: 1
   },
   chinOptions: [],
   tableData: {
@@ -22,9 +39,6 @@ const state = {
 const mutations = {
   [TAB_MENU_SELECT] (state, option) {
     state.params.name = option.name
-  },
-  [GET_CHIN_OPTIONS] (state, options) {
-    state.chinOptions = options
   },
   [SET_CHIN_SELECT] (state, select) {
     switch (select.name) {
@@ -48,6 +62,9 @@ const mutations = {
     state.tableData.tableTitle = data.title
     state.tableData.tableBody = data.body
     state.tableData.tableTotal = data.total
+  },
+  [SET_CHIN_OPTIONS] (state, data) {
+    state.chinOptions = (data)
   }
 }
 const actions = {
@@ -72,9 +89,16 @@ const actions = {
           commit('SET_TABLE_DATA', {title: title, body: body, total: total})
         }
       })
+  },
+  fetchOptionList ({commit, state}) {
+    api.getOptionList({params: state.params})
+    .then((response) => {
+      commit('SET_CHIN_OPTIONS', response)
+    })
   }
 }
 export default {
+  getters,
   state,
   mutations,
   actions

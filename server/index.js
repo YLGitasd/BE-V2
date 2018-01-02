@@ -68,6 +68,32 @@ router.get('/world', (req, res) => {
     res.send(data)
   }
 })
+router.get('/world/attribute.json', (req, res) => {
+  const activeName = req.query.name
+  fileSystem.readFile('./server/mock.json', (err, data) => {
+    if (err) throw err
+    else {
+      const arr = JSON.parse(data)
+      var attributelist = []
+      var extraShownlist = []
+      arr.map(item => {
+        if (item.name === activeName) {
+          const extrabase = item.extraShownBase
+          attributelist = item.attribute.map((item) => {
+            return {
+              value: item.value,
+              label: item.label
+            }
+          })
+          extraShownlist = item.attribute.map((item) => {
+            return [item.label, item.extraShown.concat(extrabase)]
+          })
+        }
+      })
+      res.send([extraShownlist, attributelist])
+    }
+  })
+})
 router.get('/property', (req, res) => {
   // const table = req.query.name === 'hotseller' ? 'bc_attribute_granularity_sales' : 'bc_attribute_granularity_visitor'
   // const {productStyle: category, dateTime: date, extraShown: variable, timeLen: length} = req.query

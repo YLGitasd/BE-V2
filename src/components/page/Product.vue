@@ -105,10 +105,10 @@
     </div>
     <el-tabs class="comment-Body" v-model="params.name" @tab-click="tabMenuSelect" type="border-card">
       <el-tab-pane label="热销产品" name="hotseller">
-        <commonTable :tableData="tableBody" :tableTitle="tableTitle" :tableExpend="tableExpend"></commonTable>
+        <commonTable :tableData="tableBody" :tableTitle="tableTitle"></commonTable>
       </el-tab-pane>
       <el-tab-pane label="热搜产品" name="search">
-        <commonTable :tableData="tableBody" :tableTitle="tableTitle" :tableExpend="tableExpend"></commonTable>
+        <commonTable :tableData="tableBody" :tableTitle="tableTitle"></commonTable>
       </el-tab-pane>
       <el-pagination @size-change="sizeChange" :page-size="params.pageSize" @current-change="currentChange" :current-page="params.pageCurrent"
         :page-sizes="[20, 50, 100]" :total="tableTotal" layout="total, sizes, prev, pager, next, jumper">
@@ -131,7 +131,7 @@
     },
     computed: {
       chinOptions() {
-        return this.$store.getters.chinOptions
+        return this.$store.getters.chinOption
       },
       tableTitle() {
         return this.$store.state.products.tableData.tableTitle
@@ -153,9 +153,7 @@
           timeLen: 7,
           pageSize: 20,
           pageCurrent: 1
-        },
-        chinData: [],
-        tableExpend: ""
+        }
       }
     },
     watch: {

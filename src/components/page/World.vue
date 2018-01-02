@@ -137,49 +137,48 @@
         <el-col :md="3" :lg="4" :xl="4" class="hidden-sm-and-down comment-Chin-title">
           <div>
             <h3>行业热词榜 /
-              <small>{{attribute}}</small>
+              <small>{{params.attribute}}</small>
             </h3>
           </div>
         </el-col>
-        <el-col class="comment-Chin-list">
-          <el-date-picker v-model="dateTime" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" size="small"
-            @change="chinSelectChanged({name:'dateTime',value:dateTime})"></el-date-picker>
+       <el-col class="comment-Chin-list">
+          <el-date-picker v-model="params.dateTime" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" size="small"></el-date-picker>
           <span>
-            <el-select v-model="productStyle" @change="chinSelectChanged({name:'productStyle',value:productStyle})">
-              <el-option v-for="item in chinOptions[0]" :key="item.value" :label="item.label" :value="item.value">
+            <el-select v-model="params.productStyle">
+              <el-option v-for="item in chinOptionWorld[0]" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </span>
           <span>
-            <el-select v-model="attribute" @change="chinSelectChanged({name:'attribute',value:attribute})">
-              <el-option v-for="item in chinOptions[3]" :key="item.value" :label="item.label" :value="item.value">
+            <el-select v-model="params.attribute">
+              <el-option v-for="item in chinOptionWorld[1]" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </span>
           <span>
-            <el-select v-model="extraShown" @change="chinSelectChanged({name:'extraShown',value:extraShown})">
-              <el-option v-for="item in chinOptions[1]" :key="item.value" :label="item.label" :value="item.value">
+            <el-select v-model="params.extraShown">
+              <el-option v-for="item in chinOptionWorld[2]" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </span>
           <span>
-            <el-select v-model="timeLen" @change="chinSelectChanged({name:'timeLen',value:timeLen})">
-              <el-option v-for="item in chinOptions[2]" :key="item.value" :label="item.label" :value="item.value">
+            <el-select v-model="params.timeLen">
+              <el-option v-for="item in chinOptionWorld[3]" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </span>
         </el-col>
       </el-row>
     </div>
-    <el-tabs class="comment-Body" v-model="activeName" @tab-click="tabMenuSelect" type="border-card">
+    <el-tabs class="comment-Body" v-model="params.name" @tab-click="tabMenuSelect" type="border-card">
       <el-tab-pane label="热搜搜索词" name="concern">
-        <commonTable v-show="activeName=='concern'" :tableData="tableBody" :tableTitle="tableTitle" :tableExpend="tableExpend"></commonTable>
+        <commonTable v-show="params.name=='concern'" :tableData="tableBody" :tableTitle="tableTitle"></commonTable>
       </el-tab-pane>
       <el-tab-pane label="飙升搜索词" name="increase">
-        <commonTable v-show="activeName=='increase'" :tableData="tableBody" :tableTitle="tableTitle" :tableExpend="tableExpend"></commonTable>
+        <commonTable v-show="params.name=='increase'" :tableData="tableBody" :tableTitle="tableTitle"></commonTable>
       </el-tab-pane>
       <el-tab-pane label="急速飙升词" name="flash">
-        <commonTable v-show="activeName=='flash'" :tableData="tableBody" :tableTitle="tableTitle" :tableExpend="tableExpend"></commonTable>
+        <commonTable v-show="params.name=='flash'" :tableData="tableBody" :tableTitle="tableTitle"></commonTable>
       </el-tab-pane>
       <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper"
         :total="400">
@@ -201,103 +200,47 @@
       commonTable
     },
     computed: {
-      chinOptions() {
-        return this.$store.state.products.chinOptions
+      chinOptionWorld() {
+        return this.$store.getters.chinOptionWorld
       },
       tableTitle() {
-        return this.$store.state.products.tableData.tableTitle
+        return this.$store.state.world.tableData.tableTitle
       },
       tableBody() {
-        return this.$store.state.products.tableData.tableBody
+        return this.$store.state.world.tableData.tableBody
       }
     },
     data() {
       return {
-        productStyle: "牛仔裤",
-        extraShown: '热销排名',
-        dateTime: new Date(Date.now() - 8.64e7),
-        timeLen: 7,
-        chinData: [],
-        attribute: '热搜搜索词',
-        tableExpend: "",
-        TableTotal: 20,
-        activeName: "concern",
-        mapTokey: {//映射选取向后台传参数5个键对应五个
-          '搜索词': [
-            ['相关搜索词数', '点击率'],
-            ['相关搜索词数', '词均搜索增长幅度']
-          ],
-          '长尾词': [
-            ['相关搜索词数', '点击率'],
-            ['相关搜索词数', '词均搜索增长幅度']
-          ],
-          '核心词': [
-            ['商城点击占比', '点击率'],
-            ['搜索增长幅度', '点击率']
-          ],
-          '修饰词': [
-            ['相关搜索词数', '点击率'],
-            ['相关搜索词数', '词均搜索增长幅度']
-          ],
-          '品牌词': [
-            ['商城点击占比', '点击率'],
-            ['搜索增长幅度', '点击率']
-          ]
+        params: {
+          name: 'concern',
+          productStyle: '牛仔裤',
+          extraShown: '热销排名',
+          attribute: '热搜搜索词',
+          dateTime: new Date(Date.now() - 8.64e7),
+          timeLen: 7,
+          pageSize: 20,
+          pageCurrent: 1
         }
-      };
+      }
     },
     created() {
-      this.tabMenuSelect({
-        name: this.activeName
-      })
+      this.tabMenuSelect()
       this.$store.dispatch('fetchWorldList')
     },
     methods: {
-      getChinOptions(pre,value) {
-        let b = [
-          ['牛仔裤', '休闲裤', '打底裤'],
-          ['热销排名', '搜索人气', ...value, '点击人气', '支付转化率', '直通车参考价'],
-          [7, 14],
-          [`${pre || '热搜'}搜索词`, `${pre || '热搜'}长尾词`, `${pre || '热搜'}核心词`, `${pre || '热搜'}修饰词`, `${pre || '热搜'}品牌词`]
-        ]
-        return b.map(function (item, key) {
-          return item.map(function (item) {
-            if (typeof item == 'number') {
-              return {
-                label: `近${item}天`,
-                value: item
-              }
-            } else {
-              return {
-                label: item,
-                value: item
-              }
-            }
-          })
-        })
+      tabMenuSelect() {
+        this.$store.dispatch('fetchOptionList')
+        console.log(this)
       },
-      tabMenuSelect(v) {
-          var key1 = this.attribute.substring(2,5)
-          var key2 = v.name == 'concern' ? 0 : 1
-          var a = this.mapTokey[key1][key2]
-          var pre = v.name == 'increase' ? '飙升' : '热搜'
-          this.attribute = v.name == 'increase' ? '飙升搜索词' : '热搜搜索词'
-          this.$store.commit('GET_CHIN_OPTIONS', this.getChinOptions(pre,a))
-          this.$store.commit('TAB_MENU_SELECT', v)
-          this.$store.commit('SET_CHIN_SELECT', {
-          name: 'extraShown',
-          value: '热销排名'
-          })
-          this.$store.commit('SET_CHIN_SELECT', {
-          name: 'attribute',
-          value: this.attribute
-          })
-        this.extraShown = '热销排名'
-        this.$store.dispatch('fetchWorldList')
+      attributeSelect() {
+        this.$http.get('')
       },
       chinSelectChanged(v) {
-        this.$store.commit('SET_CHIN_SELECT', v)
+        this.$store.commit('SET_CHIN_SELECT', this.params)
+        this.$store.dispatch('fetchOptionList')
         this.$store.dispatch('fetchWorldList')
+        
       }
     }
   }

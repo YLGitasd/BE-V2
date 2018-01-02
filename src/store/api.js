@@ -43,6 +43,9 @@ export default {
   getWorldList (params) {
     return fetch('/world', params)
   },
+  getOptionList (params) {
+    return fetch('/world/attribute.json', params)
+  },
   formaterDate (timeStamp, formatStr) {
     return Forma(timeStamp, formatStr)
   }
