@@ -43,9 +43,10 @@ router.get('/world', (req, res) => {
       dateTime: date,
       attribute: choice,
       extraShown: variable,
-      timeLen: length
+      timeLen: length,
+      stepNumbe: head
     } = req.query
-    const parms = "{'choice':'" + choice + "','date':'" + date + "','category':'" + category + "','variable':'" + variable + "','length':" + length + '}'
+    const parms = "{'choice':'" + choice + "','date':'" + date + "','category':'" + category + "','variable':'" + variable + "'head':" + head + ",'length':" + length + '}'
     const spawnSync1 = spawnSync('python', ['xiaobaods_ws.py', parms], {
       cwd: './server/python'
     })
@@ -58,9 +59,13 @@ router.get('/world', (req, res) => {
       dateTime: date,
       attribute: choice,
       extraShown: variable,
-      timeLen: length
+      timeLen: length,
+      pageSize,
+      pageCurrent
     } = req.query
-    const parms = "{'fun':'" + name + "','choice':'" + choice + "','date':'" + date + "','category':'" + category + "','variable':'" + variable + "','length':" + length + '}'
+    const lineb = pageSize * (pageCurrent - 1)
+    const linef = pageSize * pageCurrent
+    const parms = "{'fun':'" + name + "','choice':'" + choice + "','date':'" + date + "','line_b':" + lineb + ",'line_f':" + linef + ",'category':'" + category + "','variable':'" + variable + "','length':" + length + '}'
     const spawnSync1 = spawnSync('python', ['xiaobaods.py', parms], {
       cwd: './server/python'
     })
@@ -95,9 +100,12 @@ router.get('/world/attribute.json', (req, res) => {
   })
 })
 router.get('/property', (req, res) => {
-  // const table = req.query.name === 'hotseller' ? 'bc_attribute_granularity_sales' : 'bc_attribute_granularity_visitor'
-  // const {productStyle: category, dateTime: date, extraShown: variable, timeLen: length} = req.query
-  // const parms = "{'fun':'a','table':'" + table + "','date':'" + date + "','category':'" + category + "','variable':'" + variable + "','length':" + length + '}'
+  const table = req.query.name === 'hotseller' ? 'bc_attribute_granularity_sales' : 'bc_attribute_granularity_visitor'
+  const {productStyle: category, dateTime: date, extraShown: variable, timeLen: length, pageSize, pageCurrent} = req.query
+  const lineb = pageSize * (pageCurrent - 1)
+  const linef = pageSize * pageCurrent
+  const parms = "{'fun':'a','table':'" + table + "','date':'" + date + "','line_b':" + lineb + ",'line_f':" + linef + ",'category':'" + category + "','variable':'" + variable + "','length':" + length + '}'
+  console.log(parms)
   const spawnSync1 = spawnSync('python', ['xiaobaods.py', "{'fun':'c'}"], {
     cwd: './server/python'
   })

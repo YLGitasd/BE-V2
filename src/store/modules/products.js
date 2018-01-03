@@ -70,8 +70,13 @@ const actions = {
             }
             break
           }
-          for (let i in response) {
-            body.push(response[i])
+          /*
+          *slice方法将图片切换为大图 、以及去除信息末尾价格
+          */
+          for (let item in response) {
+            response[item].主图缩略图 = response[item].主图缩略图.slice(0, -10)
+            response[item].商品信息 = response[item].商品信息.slice(0, -7)
+            body.push(response[item])
           }
           commit('SET_TABLE_DATA', {title: title, body: body, total: total})
         }

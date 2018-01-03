@@ -22,7 +22,7 @@ table 模板为多个类目共用，每个类目的数据结构又不相同这�
     </el-table-column>
     <el-table-column label="主图缩略图" header-align="center" align="center" width="80">
       <template slot-scope="scope">
-        <a target="_blank" alt="" :href="scope.row.主图缩略图.slice(0, -10)">
+        <a target="_blank" alt="" :href="scope.row.主图缩略图">
           <img style="height:44px;" :src="scope.row.主图缩略图" alt="店铺图片">
         </a>
       </template>
@@ -43,7 +43,7 @@ table 模板为多个类目共用，每个类目的数据结构又不相同这�
       width="120"></el-table-column>
     <el-table-column :prop="tableTitle[6]" :label="tableTitle[6]" :formatter="contentFormatter" header-align="right" align="right"
       width="120"></el-table-column>
-    <el-table-column v-for="(title,id) in tableTitle" :key="id" v-if="title.slice(0,2)=='日期'" :prop="title" :render-header="renderHeader"
+    <el-table-column v-for="(title,id) in tableTitle" :key="id" v-if="title.slice(0,2) === '日期'" :prop="title" :render-header="renderHeader"
       :formatter="contentFormatter" align="right" header-align="right" width="60"></el-table-column>
     <el-table-column header-align="center" align="center" label="操作" width="120">
       <template slot-scope="scope">
@@ -63,7 +63,7 @@ table 模板为多个类目共用，每个类目的数据结构又不相同这�
     <el-table-column prop="热销排名" label="排名" width="50" header-align="center" align="center"></el-table-column>
     <el-table-column :label="tableTitle[0]" header-align="center" align="center" width="80">
       <template slot-scope="scope">
-        <a target="_blank" :href="scope.row.主图缩略图.slice(0, -10)" alt="没图抱歉">
+        <a target="_blank" :href="scope.row.主图缩略图" alt="没图抱歉">
           <img style="height:44px;" :src="scope.row.主图缩略图" alt="没图抱歉">
         </a>
       </template>
@@ -104,7 +104,8 @@ table 模板为多个类目共用，每个类目的数据结构又不相同这�
       tableTitle: {
         type: Array,
         required: true
-      }
+      },
+      picDetail: ''
     },
     methods: {
       renderHeader(h, { //elememt-ui中tabel组件的renderHeader方法
@@ -112,12 +113,12 @@ table 模板为多个类目共用，每个类目的数据结构又不相同这�
         $index
       }) {
         //格式化显示表头
-        return column.label = column.property.indexOf('日期') === 0 ? column.property.slice(-4, -2) + "-" + column.property
-          .slice(-2) : column.property
+        return column.label = column.property.indexOf('日期') === 0 ? column.property.slice(-4, -2) + "-" + column.property.slice(-2) : column.property
       },
       contentFormatter(row, column, cellValue) { //elememt-ui中tabel组件的contentFormatter方法
         let reg = String(cellValue).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"); //格式化显示千分符
         let percent = Math.round(cellValue * 100) + "%"; //格式化百分数
+        console.log(column.property==undefined)
         if (column.property.slice(0, 2) == "日期") {
           if (cellValue == null) {
             return "";
@@ -158,7 +159,7 @@ table 模板为多个类目共用，每个类目的数据结构又不相同这�
                 return cellValue = '￥' + parseFloat(cellValue).toFixed(2);
                 break;
               case '支付件数':
-                return cellValue = reg;
+                return cellValue = cellValue;
                 break;
               default:
                 return (cellValue = cellValue);

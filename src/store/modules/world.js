@@ -1,5 +1,4 @@
 import api from '../api'
-export const TAB_MENU_SELECT = 'TAB_MENU_SELECT'
 export const SET_CHIN_SELECT = 'SET_CHIN_SELECT'
 export const SET_TABLE_DATA = 'SET_TABLE_DATA'
 export const SET_CHIN_OPTIONS = 'SET_CHIN_OPTIONS'
@@ -27,7 +26,8 @@ const state = {
     dateTime: api.formaterDate(Date.now() - 8.64e7, 'YYYY-MM-DD'),
     timeLen: 7,
     pageSize: 20,
-    pageCurrent: 1
+    pageCurrent: 1,
+    stepNumbe: 10
   },
   chinOptions: [],
   tableData: {
@@ -37,25 +37,9 @@ const state = {
   }
 }
 const mutations = {
-  [TAB_MENU_SELECT] (state, option) {
-    state.params.name = option.name
-  },
-  [SET_CHIN_SELECT] (state, select) {
-    switch (select.name) {
-      case 'productStyle':
-        state.params.productStyle = select.value
-        break
-      case 'attribute':
-        state.params.attribute = select.value
-        break
-      case 'extraShown':
-        state.params.extraShown = select.value
-        break
-      case 'timeLen':
-        state.params.timeLen = select.value
-        break
-      default:
-        state.params.dateTime = select.value
+  [SET_CHIN_SELECT] (state, params) {
+    for (let k in params) {
+      state.params[k] = params[k]
     }
   },
   [SET_TABLE_DATA] (state, data) {
@@ -64,7 +48,7 @@ const mutations = {
     state.tableData.tableTotal = data.total
   },
   [SET_CHIN_OPTIONS] (state, data) {
-    state.chinOptions = (data)
+    state.chinOptions = data
   }
 }
 const actions = {
@@ -83,8 +67,8 @@ const actions = {
             }
             break
           }
-          for (let i in response) {
-            body.push(response[i])
+          for (let item in response) {
+            body.push(response[item])
           }
           commit('SET_TABLE_DATA', {title: title, body: body, total: total})
         }

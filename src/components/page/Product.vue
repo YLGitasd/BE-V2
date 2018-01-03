@@ -1,5 +1,5 @@
 <style>
-  /* comment-Chin选框样式 */
+  /*product comment-Chin选框样式 */
 
   #product .comment-Chin {
     position: fixed;
@@ -131,7 +131,7 @@
     },
     computed: {
       chinOptions() {
-        return this.$store.getters.chinOption
+        return this.$store.getters.chinOptions
       },
       tableTitle() {
         return this.$store.state.products.tableData.tableTitle
@@ -163,13 +163,11 @@
       }
     },
     created() {
-      this.tabMenuSelect({
-        name: this.params.name
-      })
+      this.tabMenuSelect()
       this.$store.dispatch('fetchProductList')
     },
     methods: {
-      tabMenuSelect(v) {
+      tabMenuSelect() {
         this.params.extraShown = '热销排名'
         this.$store.commit('SET_CHIN_SELECT', this.params)
       },
@@ -184,7 +182,7 @@
       currentChange(val) {
         this.params.pageCurrent = val
         this.$store.commit('SET_CHIN_SELECT', this.params)
-      },
+      }
     }
   }
 

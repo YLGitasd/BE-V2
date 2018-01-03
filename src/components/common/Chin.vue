@@ -1,40 +1,5 @@
 <style scoped>
-  .comment-Chin {
-    padding: 10px 30px;
-    background-color: #F5F7FA;
-  }
 
-  .comment-Chin-title h3 {
-    margin: 0px;
-  }
-
-  .comment-Chin-list {
-    text-align: right;
-  }
-
-  .comment-Chin-list span {
-    display: inline-block;
-    width: 150px;
-    margin: 3px;
-  }
-
-  @media screen and (min-width: 660px) and (max-width: 768px) {
-    .comment-Chin-list span:nth-child(even) {
-      width: 100px;
-    }
-  }
-
-  @media screen and (min-width: 450px) and (max-width: 659px) {
-    .comment-Chin-list span {
-      width: 40%;
-    }
-  }
-
-  @media screen and (max-width: 449px) {
-    .comment-Chin-list span {
-      width: 80%;
-    }
-  }
 
 </style>
 <template>
