@@ -84,21 +84,21 @@
         </el-col>
         <el-col class="comment-Chin-list">
           <el-date-picker v-model="params.dateTime" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"
-            size="small" @change="chinSelectChanged({name:'dateTime',value:dateTime})"></el-date-picker>
+            size="small" @change="chinSelectChanged()"></el-date-picker>
           <span>
-            <el-select v-model="params.productStyle" @change="chinSelectChanged({name:'productStyle',value:productStyle})">
+            <el-select v-model="params.productStyle" @change="chinSelectChanged()">
               <el-option v-for="item in chinOptions[0]" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </span>
           <span>
-            <el-select v-model="params.extraShown" @change="chinSelectChanged({name:'extraShown',value:extraShown})">
+            <el-select v-model="params.extraShown" @change="chinSelectChanged()">
               <el-option v-for="item in chinOptions[1]" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </span>
           <span>
-            <el-select v-model="params.timeLen" @change="chinSelectChanged({name:'timeLen',value:timeLen})">
+            <el-select v-model="params.timeLen" @change="chinSelectChanged()">
               <el-option v-for="item in chinOptions[2]" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
@@ -128,9 +128,11 @@
       return {
         params: {
           name: "detail",
+          dateTime: new Date(Date.now() - 8.64e7),
           productStyle: "牛仔裤",
           extraShown: '热销排名',
-          dateTime: new Date(Date.now() - 8.64e7),
+          classification:'款式',
+          attributes:'铅笔裤',
           timeLen: 7,
           pageSize: 20,
           pageCurrent: 1
@@ -171,30 +173,29 @@
     methods: {
       chinSelectChanged() {
         this.$http.get('property', this.params).then((response) => {
-          console.log(response)
-          // let data = response.data
-          // let [body, title, total] = [
-          //   [],
-          //   [], 0
-          // ]
-          // if (data) {
-          //   for (let j in data) {
-          //     for (let k in data[j]) {
-          //       if (k === 'total') {
-          //         total = data[j][k]
-          //       } else {
-          //         title.push(k)
-          //       }
-          //     }
-          //     break
-          //   }
-          //   for (let i in data) {
-          //     body.push(data[i])
-          //   }
-          //   this.tableBody = body
-          //   this.tableTitle = title
-          //   this.total = total
-          // }
+          let data = response.data
+          let [body, title, total] = [
+            [],
+            [], 0
+          ]
+          if (data) {
+            for (let j in data) {
+              for (let k in data[j]) {
+                if (k === 'total') {
+                  total = data[j][k]
+                } else {
+                  title.push(k)
+                }
+              }
+              break
+            }
+            for (let i in data) {
+              body.push(data[i])
+            }
+            this.tableBody = body
+            this.tableTitle = title
+            this.total = total
+          }
         })
       }
     }

@@ -101,10 +101,10 @@ router.get('/world/attribute.json', (req, res) => {
 })
 router.get('/property', (req, res) => {
   const table = req.query.name === 'hotseller' ? 'bc_attribute_granularity_sales' : 'bc_attribute_granularity_visitor'
-  const {productStyle: category, dateTime: date, extraShown: variable, timeLen: length, pageSize, pageCurrent} = req.query
+  const {productStyle: category, dateTime: date, extraShown: variable, timeLen: length, classification, attributes, pageSize, pageCurrent} = req.query
   const lineb = pageSize * (pageCurrent - 1)
   const linef = pageSize * pageCurrent
-  const parms = "{'fun':'a','table':'" + table + "','date':'" + date + "','line_b':" + lineb + ",'line_f':" + linef + ",'category':'" + category + "','variable':'" + variable + "','length':" + length + '}'
+  const parms = "{'fun':'a','table':'" + table + "','date':'" + date + "','line_b':" + lineb + ",'line_f':" + linef + ",'category':'" + category + "','variable':'" + variable + "','classification':'" + classification + "','attributes':'" + attributes + "','length':" + length + '}'
   console.log(parms)
   const spawnSync1 = spawnSync('python', ['xiaobaods.py', "{'fun':'c'}"], {
     cwd: './server/python'

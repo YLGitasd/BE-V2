@@ -4,6 +4,9 @@
   color: #0366D6;
   text-decoration-line: none;
 }
+.comment-table a:hover{
+  color: rgba(3,102,204,0.95)
+}
 </style>
 <!--
 table 模板为多个类目共用，每个类目的数据结构又不相同这里使用v-if配合路由切换tabel的显示隐藏;
