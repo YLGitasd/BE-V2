@@ -55,23 +55,7 @@ const actions = {
   fetchWorldList ({commit, state}) {
     api.getWorldList({params: state.params})
       .then((response) => {
-        let [body, title, total] = [[], [], 0]
-        if (response) {
-          for (let j in response) {
-            for (let k in response[j]) {
-              if (k === 'total') {
-                total = response[j][k]
-              } else {
-                title.push(k)
-              }
-            }
-            break
-          }
-          for (let item in response) {
-            body.push(response[item])
-          }
-          commit('SET_TABLE_DATA', {title: title, body: body, total: total})
-        }
+        api.formatReaponse(commit, 'SET_TABLE_DATA', response)
       })
   },
   fetchOptionList ({commit, state}) {

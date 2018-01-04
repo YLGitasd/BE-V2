@@ -121,7 +121,6 @@ table 模板为多个类目共用，每个类目的数据结构又不相同这�
       contentFormatter(row, column, cellValue) { //elememt-ui中tabel组件的contentFormatter方法
         let reg = String(cellValue).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"); //格式化显示千分符
         let percent = Math.round(cellValue * 100) + "%"; //格式化百分数
-        console.log(column.property==undefined)
         if (column.property.slice(0, 2) == "日期") {
           if (cellValue == null) {
             return "";

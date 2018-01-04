@@ -1,5 +1,4 @@
 import api from '../api'
-export const TAB_MENU_SELECT = 'TAB_MENU_SELECT'
 export const SET_CHIN_SELECT = 'SET_CHIN_SELECT'
 export const SET_TABLE_DATA = 'SET_TABLE_DATA'
 const getters = {
@@ -40,9 +39,6 @@ const state = {
   }
 }
 const mutations = {
-  [TAB_MENU_SELECT] (state, option) {
-    state.params.name = option.name
-  },
   [SET_CHIN_SELECT] (state, params) {
     for (let k in params) {
       state.params[k] = params[k]
@@ -58,28 +54,7 @@ const actions = {
   fetchProductList ({commit, state}) {
     api.getProductList({params: state.params})
       .then((response) => {
-        let [body, title, total] = [[], [], 0]
-        if (response) {
-          for (let j in response) {
-            for (let k in response[j]) {
-              if (k === 'total') {
-                total = response[j][k]
-              } else {
-                title.push(k)
-              }
-            }
-            break
-          }
-          /*
-          *slice方法将图片切换为大图 、以及去除信息末尾价格
-          */
-          for (let item in response) {
-            response[item].主图缩略图 = response[item].主图缩略图.slice(0, -10)
-            response[item].商品信息 = response[item].商品信息.slice(0, -7)
-            body.push(response[item])
-          }
-          commit('SET_TABLE_DATA', {title: title, body: body, total: total})
-        }
+        api.formatReaponse(commit, 'SET_TABLE_DATA', response)
       })
   }
 }

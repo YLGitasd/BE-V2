@@ -71,8 +71,8 @@ z-index: 0;
         activeIndex: '/',
         week: {
           placeholder: '选择周',
-          format: 'yyyy 第 WW 周',
-          type: 'week',
+          format: 'yyyy-MM-dd',
+          type: 'datetimerange',
           value: ''
         },
         show: false,

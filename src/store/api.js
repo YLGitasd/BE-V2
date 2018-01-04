@@ -43,10 +43,35 @@ export default {
   getWorldList (params) {
     return fetch('/world', params)
   },
+  getPropertyList (params) {
+    return fetch('/property', params)
+  },
   getOptionList (params) {
     return fetch('/world/attribute.json', params)
   },
   formaterDate (timeStamp, formatStr) {
     return Forma(timeStamp, formatStr)
+  },
+  formatReaponse (commit, commitName, response) {
+      /* commit为callback函数,commitName为触发的函数名，response为要处理的数据
+        *slice方法将图片切换为大图 、以及去除信息末尾价格
+        */
+    let [body, title, total] = [[], [], 0]
+    if (response) {
+      for (let j in response) {
+        for (let k in response[j]) {
+          k !== 'total' ? title.push(k) : total = response[j][k]
+        }
+        break
+      }
+      for (let item in response) {
+        if (response[item].主图缩略图) {
+          response[item].主图缩略图 = response[item].主图缩略图.slice(0, -10)
+          response[item].商品信息 = response[item].商品信息.slice(0, -7)
+        }
+        body.push(response[item])
+      }
+      commit(commitName, {title: title, body: body, total: total})
+    }
   }
 }

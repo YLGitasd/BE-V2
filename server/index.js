@@ -104,9 +104,8 @@ router.get('/property', (req, res) => {
   const {productStyle: category, dateTime: date, extraShown: variable, timeLen: length, classification, attributes, pageSize, pageCurrent} = req.query
   const lineb = pageSize * (pageCurrent - 1)
   const linef = pageSize * pageCurrent
-  const parms = "{'fun':'a','table':'" + table + "','date':'" + date + "','line_b':" + lineb + ",'line_f':" + linef + ",'category':'" + category + "','variable':'" + variable + "','classification':'" + classification + "','attributes':'" + attributes + "','length':" + length + '}'
-  console.log(parms)
-  const spawnSync1 = spawnSync('python', ['xiaobaods.py', "{'fun':'c'}"], {
+  const parms = "{'fun':'c','table':'" + table + "','date':'" + date + "','line_b':" + lineb + ",'line_f':" + linef + ",'category':'" + category + "','variable':'" + variable + "','classification':'" + classification + "','attributes':'" + attributes + "','length':" + length + '}'
+  const spawnSync1 = spawnSync('python', ['xiaobaods.py', parms], {
     cwd: './server/python'
   })
   const data = JSON.parse(spawnSync1.stdout)

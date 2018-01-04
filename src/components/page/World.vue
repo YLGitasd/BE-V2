@@ -188,7 +188,6 @@
         this.params.name == 'increase' ? this.params.attribute ='飙升搜索词': this.params.attribute ='热搜搜索词'
       },
       chinSelectChanged() {
-        console.log(this)
         this.$store.commit('SET_CHIN_SELECT', this.params)
         this.$store.dispatch('fetchOptionList')
         this.$store.dispatch('fetchWorldList')
