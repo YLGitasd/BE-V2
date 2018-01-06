@@ -17,6 +17,25 @@ const pool = mysql.createPool({
   database: 'xiaobaods',
   charset: 'UTF8_GENERAL_CI'
 })
+
+router.get('/fullviews', (req, res) => {
+  console.log(req.query)
+  // const fullwiew = spawnSync('python', ['xiaobaods_output', "{'fun':'ps','date':'2018-01-01','date_range':'2018-01-03'}"], {
+  //   cwd: './server/python/script'
+  // })
+  const name = req.query.name
+  if (name && name === 'total') {
+    let data = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'ps','date':'2018-01-01','date_range':'2018-01-03'}"], {
+      cwd: './server/python/script'
+    }).stdout)
+    res.send(data)
+  } else {
+    let data = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pi','variable':'芮丽娅旗舰店'}"], {
+      cwd: './server/python/script'
+    }).stdout)
+    res.send(data)
+  }
+})
 router.get('/product', (req, res) => {
   const table = req.query.name === 'hotseller' ? 'bc_attribute_granularity_sales' : 'bc_attribute_granularity_visitor'
   const {
