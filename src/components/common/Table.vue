@@ -1,11 +1,10 @@
 <style scoped>
-
 .comment-table a {
-  color: #0366D6;
+  color: #0366d6;
   text-decoration-line: none;
 }
-.comment-table a:hover{
-  color: rgba(3,102,204,0.95)
+.comment-table a:hover {
+  color: rgba(3, 102, 204, 0.95);
 }
 </style>
 <!--
@@ -98,78 +97,43 @@ table 模板为多个类目共用，每个类目的数据结构又不相同这�
   </el-table>
 </template>
 <script>
-  export default {
-    props: {
-      tableData: {
-        type: Array,
-        required: true
-      },
-      tableTitle: {
-        type: Array,
-        required: true
-      },
-      picDetail: ''
+export default {
+  props: {
+    tableData: {
+      type: Array,
+      required: true
     },
-    methods: {
-      renderHeader(h, { //elememt-ui中tabel组件的renderHeader方法
+    tableTitle: {
+      type: Array,
+      required: true
+    },
+    picDetail: ""
+  },
+  methods: {
+    renderHeader(
+      h,
+      {
+        //elememt-ui中tabel组件的renderHeader方法
         column,
         $index
-      }) {
-        //格式化显示表头
-        return column.label = column.property.indexOf('日期') === 0 ? column.property.slice(-4, -2) + "-" + column.property.slice(-2) : column.property
-      },
-      contentFormatter(row, column, cellValue) { //elememt-ui中tabel组件的contentFormatter方法
-        let reg = String(cellValue).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"); //格式化显示千分符
-        let percent = Math.round(cellValue * 100) + "%"; //格式化百分数
-        if (column.property.slice(0, 2) == "日期") {
-          if (cellValue == null) {
-            return "";
-          } else {
-            const fm = this.$store.state.products.params.extraShown;
-            switch (fm) {
-              case "支付子订单数":
-                return (cellValue = reg);
-                break;
-              case "交易增长幅度":
-                return (cellValue = percent);
-                break;
-              case "支付转化率指数":
-                return (cellValue = reg);
-                break;
-              case '支付转化率':
-                return cellValue = percent;
-                break;
-              case '点击率':
-                return cellValue = percent;
-                break;
-              case '词均搜索增长幅度':
-                return cellValue = percent;
-                break;
-              case '搜索增长幅度':
-                return cellValue = percent;
-                break;
-              case '相关搜索词数':
-                return cellValue = reg;
-                break;
-              case '搜索人气':
-                return cellValue = reg;
-                break;
-              case '点击人气':
-                return cellValue = reg;
-                break;
-              case '直通车参考价':
-                return cellValue = '￥' + parseFloat(cellValue).toFixed(2);
-                break;
-              case '支付件数':
-                return cellValue = cellValue;
-                break;
-              default:
-                return (cellValue = cellValue);
-                break;
-            }
-          }
+      }
+    ) {
+      //格式化显示表头
+      return (column.label =
+        column.property.indexOf("日期") === 0
+          ? column.property.slice(-4, -2) + "-" + column.property.slice(-2)
+          : column.property);
+    },
+    contentFormatter(row, column, cellValue) {
+      //elememt-ui中tabel组件的contentFormatter方法
+      let reg = String(cellValue).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"); //格式化显示千分符
+      let percent = Math.round(cellValue * 100) + "%"; //格式化百分数
+      if (column.property.slice(0, 2) == "日期") {
+        if (cellValue == null) {
+          return "";
         } else {
-          switch (column.property) {
+          const fm = this.$store.state.products.params.extraShown;
+          switch (fm) {
             case "支付子订单数":
               return (cellValue = reg);
               break;
@@ -179,40 +143,82 @@ table 模板为多个类目共用，每个类目的数据结构又不相同这�
             case "支付转化率指数":
               return (cellValue = reg);
               break;
-            case '支付转化率':
-              return cellValue = percent;
+            case "支付转化率":
+              return (cellValue = percent);
               break;
-            case '点击率':
-              return cellValue = percent;
+            case "点击率":
+              return (cellValue = percent);
               break;
-            case '词均搜索增长幅度':
-              return cellValue = percent;
+            case "词均搜索增长幅度":
+              return (cellValue = percent);
               break;
-            case '搜索增长幅度':
-              return cellValue = percent;
+            case "搜索增长幅度":
+              return (cellValue = percent);
               break;
-            case '相关搜索词数':
-              return cellValue = reg;
+            case "相关搜索词数":
+              return (cellValue = reg);
               break;
-            case '搜索人气':
-              return cellValue = reg;
+            case "搜索人气":
+              return (cellValue = reg);
               break;
-            case '点击人气':
-              return cellValue = reg;
+            case "点击人气":
+              return (cellValue = reg);
               break;
-            case '直通车参考价':
-              return cellValue = '￥' + parseFloat(cellValue).toFixed(2);
+            case "直通车参考价":
+              return (cellValue = "￥" + parseFloat(cellValue).toFixed(2));
               break;
-            case '支付件数':
-              return cellValue = reg;
+            case "支付件数":
+              return (cellValue = cellValue);
               break;
             default:
               return (cellValue = cellValue);
               break;
           }
         }
+      } else {
+        switch (column.property) {
+          case "支付子订单数":
+            return (cellValue = reg);
+            break;
+          case "交易增长幅度":
+            return (cellValue = percent);
+            break;
+          case "支付转化率指数":
+            return (cellValue = reg);
+            break;
+          case "支付转化率":
+            return (cellValue = percent);
+            break;
+          case "点击率":
+            return (cellValue = percent);
+            break;
+          case "词均搜索增长幅度":
+            return (cellValue = percent);
+            break;
+          case "搜索增长幅度":
+            return (cellValue = percent);
+            break;
+          case "相关搜索词数":
+            return (cellValue = reg);
+            break;
+          case "搜索人气":
+            return (cellValue = reg);
+            break;
+          case "点击人气":
+            return (cellValue = reg);
+            break;
+          case "直通车参考价":
+            return (cellValue = "￥" + parseFloat(cellValue).toFixed(2));
+            break;
+          case "支付件数":
+            return (cellValue = reg);
+            break;
+          default:
+            return (cellValue = cellValue);
+            break;
+        }
       }
     }
   }
-
+};
 </script>

@@ -19,18 +19,16 @@ const pool = mysql.createPool({
 })
 
 router.get('/fullviews', (req, res) => {
-  console.log(req.query)
-  // const fullwiew = spawnSync('python', ['xiaobaods_output', "{'fun':'ps','date':'2018-01-01','date_range':'2018-01-03'}"], {
-  //   cwd: './server/python/script'
-  // })
-  const name = req.query.name
-  if (name && name === 'total') {
-    let data = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'ps','date':'2018-01-01','date_range':'2018-01-03'}"], {
+  const style = req.query.chartStyle
+  if (style && style === 'bar') {
+    var dateRange = req.query.dateRange
+    let data = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'ps','date':'" + dateRange[0] + "','date_range':'" + dateRange[0] + "'}"], {
       cwd: './server/python/script'
     }).stdout)
     res.send(data)
   } else {
-    let data = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pi','variable':'芮丽娅旗舰店'}"], {
+    var storeName = req.query.storeName
+    let data = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pi','variable':'" + storeName + "'}"], {
       cwd: './server/python/script'
     }).stdout)
     res.send(data)

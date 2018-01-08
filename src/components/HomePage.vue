@@ -1,14 +1,14 @@
 <style>
-.article-title{
-  width:200px;
+.article-title {
+  width: 200px;
 }
-.article-piture{
-  width:200px;
-  height:100px;
-  border:1px solid #DCDFE6;
+.article-piture {
+  width: 200px;
+  height: 100px;
+  border: 1px solid #dcdfe6;
 }
-.HomePage .v-note-wrapper{
-z-index: 0;
+.HomePage .v-note-wrapper {
+  z-index: 0;
 }
 </style>
 <template>
@@ -60,91 +60,100 @@ z-index: 0;
   </div>
 </template>
 <script>
-  import commonHeader from './common/Header.vue';
-  export default {
-    components: {
-      commonHeader
-    },
-    name: 'HomePage',
-    data() {
-      return {
-        activeIndex: '/',
-        week: {
-          placeholder: '选择周',
-          format: 'yyyy-MM-dd',
-          type: 'datetimerange',
-          value: ''
-        },
-        show: false,
-        form: {
-          title: '',
-          author: '',
-          value:''
-        },
-        tableData: [{
-          date: '2016-05-03',
-          title: '冬款注意事项',
-          author: '王小虎',
+import commonHeader from "./common/Header.vue";
+export default {
+  components: {
+    commonHeader
+  },
+  name: "HomePage",
+  data() {
+    return {
+      activeIndex: "/",
+      week: {
+        placeholder: "选择周",
+        format: "yyyy-MM-dd",
+        type: "datetimerange",
+        value: ""
+      },
+      show: false,
+      form: {
+        title: "",
+        author: "",
+        value: ""
+      },
+      tableData: [
+        {
+          date: "2016-05-03",
+          title: "冬款注意事项",
+          author: "王小虎",
           status: 200,
-          verifier: '张三',
+          verifier: "张三",
           amount: 200
-        }, {
-          date: '2016-05-02',
-          title: '那些你不知道的潜力款',
-          author: '王小虎',
+        },
+        {
+          date: "2016-05-02",
+          title: "那些你不知道的潜力款",
+          author: "王小虎",
           status: 200,
-          verifier: '张三',
+          verifier: "张三",
           amount: 203
-        }, {
-          date: '2016-05-04',
-          title: '抓住热门冬款的尾巴',
-          author: '王小虎',
+        },
+        {
+          date: "2016-05-04",
+          title: "抓住热门冬款的尾巴",
+          author: "王小虎",
           status: 302,
-          verifier: '张三',
+          verifier: "张三",
           amount: 233
-        }, {
-          date: '2016-05-01',
-          title: '新一期热门春款新品',
-          author: '王小虎',
+        },
+        {
+          date: "2016-05-01",
+          title: "新一期热门春款新品",
+          author: "王小虎",
           status: 200,
-          verifier: '张三',
+          verifier: "张三",
           amount: 23
-        }, {
-          date: '2016-05-08',
-          title: '春款牛仔注意事项',
-          author: '王小虎',
+        },
+        {
+          date: "2016-05-08",
+          title: "春款牛仔注意事项",
+          author: "王小虎",
           status: 200,
-          verifier: '张三',
+          verifier: "张三",
           amount: 333
-        }]
-      }
+        }
+      ]
+    };
+  },
+  created() {},
+  methods: {
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
     },
-    created() {},
-    methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClick(row) {
-        console.log(row)
-      },
-      creatArticle(){
-        // 提交文档信息到服务
-        console.log(this.$refs.form.model)
-        var information = this.$refs.form.model
-        this.$http.post('weekreport/editor',information, {headers: {'Content-Type': 'multipart/form-data'}}).then((response)=>{
-          console.log(response)
+    handleClick(row) {
+      console.log(row);
+    },
+    creatArticle() {
+      // 提交文档信息到服务
+      console.log(this.$refs.form.model);
+      var information = this.$refs.form.model;
+      this.$http
+        .post("weekreport/editor", information, {
+          headers: { "Content-Type": "multipart/form-data" }
         })
-      },
-      imageAdd(pos, $file){
-        // 添加图片 并上传到七牛云 返回链接
-        console.log(pos, $file)
-         var formdata = new FormData()
-           formdata.append('image', $file)
-        this.$http.post('qiniu/image',formdata).then((response) =>{
-          console.log(response)
-        })
-      }
+        .then(response => {
+          console.log(response);
+        });
+    },
+    imageAdd(pos, $file) {
+      // 添加图片 并上传到七牛云 返回链接
+      console.log(pos, $file);
+      var formdata = new FormData();
+      formdata.append("image", $file);
+      this.$http.post("qiniu/image", formdata).then(response => {
+        console.log(response);
+      });
     }
   }
-
+};
 </script>

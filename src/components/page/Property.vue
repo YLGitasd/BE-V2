@@ -1,76 +1,75 @@
 <style>
-  /*property comment-Chin选框样式 */
+/*property comment-Chin选框样式 */
 
-  #property .comment-Chin {
-    position: fixed;
-    box-sizing: border-box;
-    top: 61px;
-    width: 100%;
-    z-index: 10;
-    padding: 10px 30px;
-    background-color: #F5F7FA;
+#property .comment-Chin {
+  position: fixed;
+  box-sizing: border-box;
+  top: 61px;
+  width: 100%;
+  z-index: 10;
+  padding: 10px 30px;
+  background-color: #f5f7fa;
+}
+
+#property .comment-Chin-title h3 {
+  margin: 0px;
+}
+
+#property .comment-Chin-list {
+  text-align: right;
+}
+
+#property .comment-Chin-list > span {
+  display: inline-block;
+  width: 150px;
+  margin: 3px;
+}
+
+@media screen and (min-width: 660px) and (max-width: 768px) {
+  #property .comment-Chin-list > span:nth-child(even) {
+    width: 100px;
   }
+}
 
-  #property .comment-Chin-title h3 {
-    margin: 0px;
+@media screen and (min-width: 450px) and (max-width: 659px) {
+  #property.comment-Chin-list > span {
+    width: 40%;
   }
+}
 
-  #property .comment-Chin-list {
-    text-align: right;
+@media screen and (max-width: 449px) {
+  #property.comment-Chin-list > span {
+    width: 80%;
   }
+}
+/* comment-Body样式 */
 
-  #property .comment-Chin-list>span {
-    display: inline-block;
-    width: 150px;
-    margin: 3px;
-  }
+#property .comment-Body {
+  margin-top: 118px;
+}
 
-  @media screen and (min-width: 660px) and (max-width: 768px) {
-    #property .comment-Chin-list>span:nth-child(even) {
-      width: 100px;
-    }
-  }
+#property .el-tabs--border-card > .el-tabs__header {
+  width: 100%;
+  position: fixed;
+  border: 1px solid #d8dce5;
+  margin: -1px 2px;
+  top: 119px;
+  z-index: 10;
+}
 
-  @media screen and (min-width: 450px) and (max-width: 659px) {
-    #property.comment-Chin-list>span {
-      width: 40%;
-    }
-  }
+#property .comment-Body .el-table__header-wrapper {
+  margin-top: calc(39px - 15px);
+  z-index: 10;
+  position: fixed;
+}
 
-  @media screen and (max-width: 449px) {
-    #property.comment-Chin-list>span {
-      width: 80%;
-    }
-  }
-  /* comment-Body样式 */
+#property .comment-Body .el-table__body-wrapper {
+  margin-top: 65px;
+}
 
-  #property .comment-Body {
-    margin-top: 118px;
-  }
-
-  #property .el-tabs--border-card>.el-tabs__header {
-    width: 100%;
-    position: fixed;
-    border: 1px solid #d8dce5;
-    margin: -1px 2px;
-    top: 119px;
-    z-index: 10;
-  }
-
-  #property .comment-Body .el-table__header-wrapper {
-    margin-top: calc(39px - 15px);
-    z-index: 10;
-    position: fixed;
-  }
-
-  #property .comment-Body .el-table__body-wrapper {
-    margin-top: 65px;
-  }
-
-  #property .el-pagination {
-    text-align: center;
-  }
-
+#property .el-pagination {
+  text-align: center;
+}
 </style>
 <template>
   <div id="property">
@@ -119,163 +118,186 @@
   </div>
 </template>
 <script>
-  import {
-    mapGetters,
-    mapMutations,
-    mapActions
-  } from "vuex";
-  import commonHeader from "../common/Header.vue";
-  import commonTable from "../common/Table.vue";
-  export default {
-    components: {
-      commonHeader,
-      commonTable
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import commonHeader from "../common/Header.vue";
+import commonTable from "../common/Table.vue";
+export default {
+  components: {
+    commonHeader,
+    commonTable
+  },
+  computed: {
+    tableTitle() {
+      return this.$store.state.property.tableData.tableTitle;
     },
-    computed: {
-      tableTitle() {
-        return this.$store.state.property.tableData.tableTitle
-      },
-      tableBody() {
-        return this.$store.state.property.tableData.tableBody
-      },
-      tableTotal() {
-        return this.$store.state.property.tableData.tableTotal
-      }
+    tableBody() {
+      return this.$store.state.property.tableData.tableBody;
     },
-    data() {
-      return {
-        params: {
-          name: "detail",
-          dateTime: new Date(Date.now() - 8.64e7),
-          productStyle: "牛仔裤",
-          extraShown: '热销排名',
-          classification: '款式',
-          attributes: '铅笔裤',
-          timeLen: 7,
-          pageSize: 20,
-          pageCurrent: 1
-        },
-        chinOptions: [
-          [],
-          [],
-          []
-        ],
-        selectOptions: [{
-          label: '款式',
-          value: '款式',
-          children: [{
-            value: '铅笔裤',
-            label: '铅笔裤'
-          }, {
-            value: '哈伦裤',
-            label: '哈伦裤'
-          }, {
-            value: '阔脚裤',
-            label: '阔脚裤'
-          }, {
-            value: '连衣裤',
-            label: '连衣裤'
-          }, {
-            value: '背带裤',
-            label: '背带裤'
-          }, {
-            value: '直筒',
-            label: '直筒'
-          }, {
-            value: '灯笼裤',
-            label: '灯笼裤'
-          }, {
-            value: '微喇裤',
-            label: '微喇裤'
-          }, {
-            value: '工装裤',
-            label: '工装裤'
-          }, {
-            value: '垮裤',
-            label: '垮裤'
-          }]
-        }, {
-          label: '厚薄',
-          value: '厚薄',
-          children: [{
-            value: '超薄',
-            label: '超薄'
-          }, {
-            value: '薄款',
-            label: '薄款'
-          }, {
-            value: '常规',
-            label: '常规'
-          }, {
-            value: '加厚',
-            label: '加厚'
-          }]
-        }, {
-          label: '裤长',
-          value: '裤长',
-          children: [{
-            value: '长裤',
-            label: '长裤'
-          }, {
-            value: '短裤',
-            label: '短裤'
-          }, {
-            value: '超短裤',
-            label: '超短裤'
-          }, {
-            value: '五分裤',
-            label: '五分裤'
-          }, {
-            value: '九分裤',
-            label: '九分裤'
-          }, {
-            value: '七分裤',
-            label: '七分裤'
-          }]
-        }, {
-          label: '腰型',
-          value: '腰型',
-          children: [{
-            value: '高腰',
-            label: '高腰'
-          }, {
-            value: '低腰',
-            label: '低腰'
-          }, {
-            value: '中腰',
-            label: '中腰'
-          }]
-        }],
-        selectName: ['款式', '铅笔裤']
-      }
-    },
-    watch: {
-      params: {
-        handler: 'chinSelectChanged',
-        deep: true
-      }
-    },
-    created() {
-      this.$store.dispatch('fetchPropertyList')
-    },
-    methods: {
-      chinSelectChanged() {
-        this.$store.commit('SET_CHIN_SELECT', this.params)
-        this.$store.dispatch('fetchPropertyList')
-      },
-      handleAttributes(val) {
-        this.params.classification = val[0]
-        this.params.attributes = val[1]
-      },
-      sizeChange(val) {
-        this.params.pageSize = val
-        this.$store.commit('SET_CHIN_SELECT', this.params)
-      },
-      currentChange(val) {
-        this.params.pageCurrent = val
-        this.$store.commit('SET_CHIN_SELECT', this.params)
-      }
+    tableTotal() {
+      return this.$store.state.property.tableData.tableTotal;
     }
-  };
-
+  },
+  data() {
+    return {
+      params: {
+        name: "detail",
+        dateTime: new Date(Date.now() - 8.64e7),
+        productStyle: "牛仔裤",
+        extraShown: "热销排名",
+        classification: "款式",
+        attributes: "铅笔裤",
+        timeLen: 7,
+        pageSize: 20,
+        pageCurrent: 1
+      },
+      chinOptions: [[], [], []],
+      selectOptions: [
+        {
+          label: "款式",
+          value: "款式",
+          children: [
+            {
+              value: "铅笔裤",
+              label: "铅笔裤"
+            },
+            {
+              value: "哈伦裤",
+              label: "哈伦裤"
+            },
+            {
+              value: "阔脚裤",
+              label: "阔脚裤"
+            },
+            {
+              value: "连衣裤",
+              label: "连衣裤"
+            },
+            {
+              value: "背带裤",
+              label: "背带裤"
+            },
+            {
+              value: "直筒",
+              label: "直筒"
+            },
+            {
+              value: "灯笼裤",
+              label: "灯笼裤"
+            },
+            {
+              value: "微喇裤",
+              label: "微喇裤"
+            },
+            {
+              value: "工装裤",
+              label: "工装裤"
+            },
+            {
+              value: "垮裤",
+              label: "垮裤"
+            }
+          ]
+        },
+        {
+          label: "厚薄",
+          value: "厚薄",
+          children: [
+            {
+              value: "超薄",
+              label: "超薄"
+            },
+            {
+              value: "薄款",
+              label: "薄款"
+            },
+            {
+              value: "常规",
+              label: "常规"
+            },
+            {
+              value: "加厚",
+              label: "加厚"
+            }
+          ]
+        },
+        {
+          label: "裤长",
+          value: "裤长",
+          children: [
+            {
+              value: "长裤",
+              label: "长裤"
+            },
+            {
+              value: "短裤",
+              label: "短裤"
+            },
+            {
+              value: "超短裤",
+              label: "超短裤"
+            },
+            {
+              value: "五分裤",
+              label: "五分裤"
+            },
+            {
+              value: "九分裤",
+              label: "九分裤"
+            },
+            {
+              value: "七分裤",
+              label: "七分裤"
+            }
+          ]
+        },
+        {
+          label: "腰型",
+          value: "腰型",
+          children: [
+            {
+              value: "高腰",
+              label: "高腰"
+            },
+            {
+              value: "低腰",
+              label: "低腰"
+            },
+            {
+              value: "中腰",
+              label: "中腰"
+            }
+          ]
+        }
+      ],
+      selectName: ["款式", "铅笔裤"]
+    };
+  },
+  watch: {
+    params: {
+      handler: "chinSelectChanged",
+      deep: true
+    }
+  },
+  created() {
+    this.$store.dispatch("fetchPropertyList");
+  },
+  methods: {
+    chinSelectChanged() {
+      this.$store.commit("SET_CHIN_SELECT", this.params);
+      this.$store.dispatch("fetchPropertyList");
+    },
+    handleAttributes(val) {
+      this.params.classification = val[0];
+      this.params.attributes = val[1];
+    },
+    sizeChange(val) {
+      this.params.pageSize = val;
+      this.$store.commit("SET_CHIN_SELECT", this.params);
+    },
+    currentChange(val) {
+      this.params.pageCurrent = val;
+      this.$store.commit("SET_CHIN_SELECT", this.params);
+    }
+  }
+};
 </script>

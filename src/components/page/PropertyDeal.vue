@@ -1,34 +1,33 @@
 <style>
-  #property-deal .comment-Chin {
-    position: fixed;
-    box-sizing: border-box;
-    top: 61px;
-    width: 100%;
-    z-index: 10;
-    padding: 10px 30px;
-    background-color: #F5F7FA;
-  }
+#property-deal .comment-Chin {
+  position: fixed;
+  box-sizing: border-box;
+  top: 61px;
+  width: 100%;
+  z-index: 10;
+  padding: 10px 30px;
+  background-color: #f5f7fa;
+}
 
-  #property-deal .comment-Chin-title h3 {
-    margin: 0px;
-  }
+#property-deal .comment-Chin-title h3 {
+  margin: 0px;
+}
 
-  #property-deal .comment-Chin-list {
-    text-align: right;
-  }
+#property-deal .comment-Chin-list {
+  text-align: right;
+}
 
-  #property-deal .comment-Chin-list>span {
-    display: inline-block;
-    width: 150px;
-    margin: 3px;
-  }
+#property-deal .comment-Chin-list > span {
+  display: inline-block;
+  width: 150px;
+  margin: 3px;
+}
 
-  #property-deal .comment-Body{
-    border:1px solid #E4E7ED;
-    margin: 119px 2px 0;
-    padding: 2px 15px;
-  }
-
+#property-deal .comment-Body {
+  border: 1px solid #e4e7ed;
+  margin: 119px 2px 0;
+  padding: 2px 15px;
+}
 </style>
 
 <template>
@@ -91,49 +90,47 @@
   </div>
 </template>
 <script>
-  import commonHeader from "../common/Header.vue";
-  import commonListprop from "../common/Listprop.vue";
-  export default {
-    components: {
-      commonHeader,
-      commonListprop
-    },
-    data() {
-      return {
-        listgroup: [],
-        propertitle: [],
-        properdata: [],
-        activeName: ['厚薄'],
-        total: [11199615, 1778621725, 15299],
-        listProper: '',
-        productStyle: '',
-        dateTime: new Date(Date.now() - 8.64e7),
-        chinOptions: [
-          [],
-          []
-        ]
-      }
-    },
-    created() {
-      this.$http.get('property-deal', {
+import commonHeader from "../common/Header.vue";
+import commonListprop from "../common/Listprop.vue";
+export default {
+  components: {
+    commonHeader,
+    commonListprop
+  },
+  data() {
+    return {
+      listgroup: [],
+      propertitle: [],
+      properdata: [],
+      activeName: ["厚薄"],
+      total: [11199615, 1778621725, 15299],
+      listProper: "",
+      productStyle: "",
+      dateTime: new Date(Date.now() - 8.64e7),
+      chinOptions: [[], []]
+    };
+  },
+  created() {
+    this.$http
+      .get("property-deal", {
         params: {
-          name: 'deal'
+          name: "deal"
         }
-      }).then((response) => {
-        this.listgroup = [{
-          label: '属性',
-          value: '属性',
-          data: response.data.data
-        }]
-        let proper = response.data.data1
-        this.propertitle = Object.keys(proper[0])
-        this.properdata = Object.values(response.data.data1)
-        console.log(this.properdata)
       })
-    },
-    methods: {
-
-    }
-  }
-
+      .then(response => {
+        this.listgroup = [
+          {
+            label: "属性",
+            value: "属性",
+            data: response.data.data
+          }
+        ];
+        let proper = response.data.data1;
+        this.propertitle = Object.keys(proper[0]);
+        this.properdata = Object.values(response.data.data1);
+        console.log(this.properdata);
+      });
+  },
+  methods: {}
+};
 </script>

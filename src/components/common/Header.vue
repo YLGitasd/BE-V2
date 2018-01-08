@@ -1,9 +1,9 @@
 <style>
 .comment-header {
- position: fixed;
- width: 100%;
- top: 0;
- z-index: 10;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 10;
 }
 </style>
 
@@ -23,11 +23,7 @@
   </div>
 </template>
 <script>
-import {
-  mapGetters,
-  mapMutations,
-  mapActions
-} from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   props: {
     activeIndex: {

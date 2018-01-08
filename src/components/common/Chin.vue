@@ -1,7 +1,3 @@
-<style scoped>
-
-
-</style>
 <template>
   <div class="comment-Chin">
     <el-row type="flex" justify="end" align="middle">
@@ -36,43 +32,36 @@
   </div>
 </template>
 <script>
-  import {
-    mapState,
-    mapGetters,
-    mapMutations,
-    mapActions
-  } from "vuex";
-  export default {
-    props: {
-      chinTitle: {
-        type: String
-      },
-      chinOptions: {
-        type: Array,
-        required: true
-      },
-      chinSelect: {
-        type: Array,
-        required: true
-      }
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+export default {
+  props: {
+    chinTitle: {
+      type: String
     },
-    data() {
-      return {
-        productStyle: "",
-        extraShown:'',
-        timeLen:'',
-        dateTime: ""
-      };
+    chinOptions: {
+      type: Array,
+      required: true
     },
-    methods: {
-      timeSelectChanged() {
-        console.log(this.dateTime, this.chinSelect)
-      },
-      chinSelectChanged(v){
-        console.log(v)
-       
-      }
+    chinSelect: {
+      type: Array,
+      required: true
+    }
+  },
+  data() {
+    return {
+      productStyle: "",
+      extraShown: "",
+      timeLen: "",
+      dateTime: ""
+    };
+  },
+  methods: {
+    timeSelectChanged() {
+      console.log(this.dateTime, this.chinSelect);
+    },
+    chinSelectChanged(v) {
+      console.log(v);
     }
   }
-
+};
 </script>
