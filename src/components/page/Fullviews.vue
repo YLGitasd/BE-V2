@@ -45,7 +45,7 @@
     <common-header activeIndex="fullviews"></common-header>
     <div class="fullviews-chart">
       <el-row>
-        <el-col :span="12">
+        <el-col :span="10">
           <div class="Fullviews">
             <el-card>
               <div slot="header">
@@ -56,11 +56,11 @@
                   </el-date-picker>
                 </div>
               </div>
-              <div id="myEchartBar" style="width:100%;height:450px;"></div>
+              <div id="myEchartBar" style="width:100%;height:300px;"></div>
             </el-card>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="14">
           <div class="Fullviews">
             <el-card>
               <div slot="header">
@@ -72,7 +72,7 @@
                   </el-select>
                 </div>
               </div>
-              <div id="myEchartLine" style="width:100%;height:450px;"></div>
+              <div id="myEchartLine" style="width:100%;height:300px;"></div>
             </el-card>
           </div>
         </el-col>
@@ -175,8 +175,8 @@
             label: "北京烤鸭"
           }
         ],
-        storeName: "芮丽娅旗舰店",
-        storeOption:[]
+        storeName: "",
+        storeOption: []
       };
     },
     mounted() {
@@ -190,6 +190,9 @@
         .then(response => {
           this.setSerias(response.data);
         });
+      this.getLineSerias({
+        name: this.storeName
+      })
     },
     methods: {
       storeDateRangeChange() {
@@ -202,6 +205,7 @@
           return items["店铺"];
         });
         this.storeOption = xAxisData
+        this.storeName = xAxisData[0]
         var seriasData0 = Object.values(fulldata).map(items => {
           return items["销售额"];
         });
@@ -212,7 +216,10 @@
         var option = {
           color: this.color,
           tooltip: {
-            trigger: "axis"
+            trigger: "axis",
+            axisPointer: {
+              type: 'shadow'
+            }
           },
           grid: {
             containLabel: true,
@@ -225,6 +232,18 @@
             selectedMode: "single",
             data: legendData
           },
+          toolbox: {
+            feature: {
+              dataZoom: {
+                yAxisIndex: 'none'
+              },
+              magicType: {
+                type: ['line', 'bar']
+              },
+              restore: {},
+              saveAsImage: {}
+            }
+          },
           xAxis: [{
             type: "category",
             axisTick: {
@@ -232,7 +251,7 @@
               show: false
             },
             axisLabel: {
-              rotate: -65
+              rotate: 30
             },
             data: xAxisData
           }],
@@ -277,6 +296,7 @@
                 position: "top"
               }
             },
+            barCategoryGap: '40%',
             data: data.map((item, key) => {
               return {
                 value: item,
@@ -291,12 +311,12 @@
         }
       },
       getLineSerias(params) {
-        let storename = params.name || '芮丽娅旗舰店'
+        this.storeName = params.name || '芮丽娅旗舰店'
         this.$http
           .get("fullviews", {
             params: {
               chartStyle: "line",
-              storeName: storename
+              storeName: this.storeName
             }
           })
           .then(response => {
@@ -304,7 +324,7 @@
             var storeNameX = Object.keys(fulldata).map(items => {
               return moment(new Date(+items)).format('YYYY-MM-DD')
             })
-            
+
             var seriasData0 = Object.values(fulldata).map(items => {
               return items["销售额"]
             })
@@ -329,6 +349,18 @@
                 left: "3%",
                 right: "4%",
                 bottom: "3%"
+              },
+              toolbox: {
+                feature: {
+                  dataZoom: {
+                    yAxisIndex: 'none'
+                  },
+                  magicType: {
+                    type: ['line', 'bar']
+                  },
+                  restore: {},
+                  saveAsImage: {}
+                }
               },
               xAxis: {
                 type: "category",

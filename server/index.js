@@ -1,11 +1,14 @@
 const express = require('express')
+const http = require('http')
 const multer = require('multer')
-// const qiniu = require('./qiniu')
+const qiniu = require('./qiniu')
+const moment = require('moment')
 const storage = multer.memoryStorage()
 const upload = multer({
   storage: storage
 })
 const fileSystem = require('fs')
+const path = require('path')
 const router = express.Router()
 const spawnSync = require('child_process').spawnSync
 const mysql = require('mysql2')
@@ -166,12 +169,56 @@ router.get('/weekreport', (req, res) => {
   })
 })
 router.post('/qiniu/image', upload.single('image'), (req, res) => {
-  // var information = qiniu.uploadImage(req.file.originalname, req.file.buffer.toString())
-  console.log(req.file)
+  var file = req.file
+  var filepath = `./server/uploads/${file.originalname}`
+  var filename = Date.now() + file.originalname
+  fileSystem.writeFile(filepath, file.buffer, (err) => {
+    if (err) throw err;
+    qiniu.uploadImgFile(filename ,filepath,(respErr,respBody, respInfo) => {
+        if (respErr) {
+          throw respErr;
+        }
+        if (respInfo.statusCode == 200) {
+          console.log('上传成功' + respBody);
+          fileSystem.unlinkSync(filepath)
+          res.send('http://owvj4xfha.bkt.clouddn.com/'+filename)
+        } else {
+          console.log('上传失败' + respBody);
+        }
+      })
+    
+  })
 })
 router.post('/weekreport/editor', (req, res) => {
-  var data = req.body
-  res.send(data)
+  const {mdString,title,author} = req.body
+  const date =  moment().format('YYYY-MM-DD')
+  var filename ='article'+ date + '.md'
+
+  qiniu.uploadMdFile(filename, mdString , (respErr,respBody, respInfo) => {
+      if (respErr) {
+        res.send({code:404,msg:'文章上传失败'})
+      }
+      if (respInfo.statusCode == 200) {
+        var escapeData = {id:'',date:date,name:filename,title:title,editor:author,status: 302,readers:0, review:''}
+        pool.query('INSERT INTO `week_article` SET ?', escapeData ,function (err, result) {
+          if (err) throw (err)
+          res.send({code: 200, msg:'文章上传成功'})
+        })
+      } else {
+        res.send({code: 302, msg:'文章已经存在，不能重复上传'})
+      }
+    })
+})
+router.get('/weekreport/view', (req,res) => {
+  console.log(req.query)
+  var urlsToPrefetch = [
+    'http://owvh3ep5x.bkt.clouddn.com/article2018-01-10.md'
+  ];
+  let rawData = '';
+  http.get(urlsToPrefetch[0],(res) =>{
+    res.on('data', (chunk) => { rawData += chunk; });
+  })
+  res.send(rawData)
 })
 router.get('/tool-box', (req, res) => {
   console.log(req.query)
