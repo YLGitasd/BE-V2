@@ -6,6 +6,17 @@
   top: 0px;
   width: 100%;
 }
+/* 周报列表样式 */
+#weekport .portList {
+  margin: 100px auto;
+  width: 80%;
+}
+
+#weekport .portList .el-icon-document:before {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
 /* portbody周报样式 悬浮层*/
 
 #weekport .portbody {
@@ -15,8 +26,8 @@
   bottom: 0;
   left: 0;
   background: rgba(229, 229, 229, 0.95);
-  z-index: 99994;
-  overflow: auto;
+  z-index: 9999;
+  overflow: scroll;
   padding-top: 60px;
 }
 
@@ -107,17 +118,44 @@
 <template>
   <div id="weekport">
     <common-header class="portheader" activeIndex="weekport"></common-header>
-    <div style="margin-top:100px;">
-      <el-button>默认按钮</el-button>
-      <el-button type="primary">主要按钮</el-button>
-      <el-button type="success">成功按钮</el-button>
-      <el-button type="info">信息按钮</el-button>
-      <el-button type="warning">警告按钮</el-button>
-      <el-button type="danger">危险按钮</el-button>
-    </div>
-
+     <el-card class="portList">
+      <div slot="header">
+        <i class="el-icon-document">周报列表</i>
+        <div style="float: right;">
+          <el-input style="width:168px;margin-right:20px;" placeholder="搜索" v-model="input"></el-input>
+          <el-button icon="el-icon-plus" :disabled="buttonGroup.increase" @click="increaseArticle">增加</el-button>
+          <el-button icon="el-icon-view" :disabled="buttonGroup.view" @click="viewArticle">查看</el-button>
+          <el-button icon="el-icon-edit" :disabled="buttonGroup.editor" @click="editorArticle">编辑</el-button>
+          <el-button icon="el-icon-delete" :disabled="buttonGroup.delete" @click="deleteArticle">删除</el-button>
+        </div>
+      </div>
+      <div>
+        <el-table v-show="!showEditor" ref="multipleTable" :data="tableData" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column prop="id" label="#" width="50"></el-table-column>
+          <el-table-column prop="date" label="上传时间"></el-table-column>
+          <el-table-column prop="title" label="标题"></el-table-column>
+          <el-table-column prop="editor" label="发布者"></el-table-column>
+          <el-table-column prop="status" label="状态"></el-table-column>
+          <el-table-column prop="verifier" label="审核人"></el-table-column>
+          <el-table-column prop="readers" label="阅读人数"></el-table-column>
+        </el-table>
+        <el-form v-show="showEditor" ref="form" :model="form" label-width="80px">
+          <el-form-item label="文章标题">
+            <el-input class="article-title" v-model="form.title"></el-input>
+          </el-form-item>
+          <el-form-item label="文章内容">
+            <mavon-editor ref="md" :subfield="false" @imgAdd="imageAdd" v-model="form.mdString"></mavon-editor>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm">创建文章</el-button>
+            <el-button @click="showEditor = !showEditor">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-card>
     <div class="portbody" v-show="showWraper">
-      <div class="close-button">
+      <div class="close-button" @click="closeArticle">
         <i class="el-icon-close"></i>
       </div>
       <!-- 周报容器：body-wraper -->
@@ -144,6 +182,7 @@
 <script>
 import commonHeader from "../common/Header.vue";
 import marked from "marked";
+import moment from "moment";
 export default {
   components: {
     commonHeader
@@ -152,24 +191,114 @@ export default {
     return {
       isScroll: false,
       showWraper: false,
-      markdownParser: ""
+      markdownParser: "",
+      input: "",
+      showEditor: false,
+      form: {
+        title: "",
+        author: "顾园园",
+        mdString: "",
+        date: moment().format('YYYY-MM-DD')
+      },
+      selection: [],
+      buttonGroup: {
+        increase: false,
+        view: true,
+        editor: true,
+        delete: true
+      },
+      tableData: [
+        {
+          date: "2016-05-08",
+          title: "春款牛仔注意事项",
+          author: "王小虎",
+          status: 200,
+          verifier: "张三",
+          amount: 333
+        }
+      ]
     };
   },
+  watch: {
+    selection: "buttonDisable"
+  },
   mounted() {
+    window.addEventListener('scroll',this.handleScroll)
     this.$http.get("weekreport").then(response => {
-      this.markdownParser = marked(response.data, {
-        gfm: true,
-        tables: true,
-        breaks: true,
-        pedantic: false,
-        sanitize: false,
-        smartLists: true,
-        smartypants: false
-      });
+      this.tableData = response.data
     });
   },
   methods: {
-    closeArticle() {}
+    buttonDisable() {
+      var selectionLength = this.selection.length;
+      if (selectionLength == 0) {
+        this.buttonGroup = {
+          increase: false,
+          view: true,
+          editor: true,
+          delete: true
+        };
+      } else if (selectionLength == 1) {
+        this.buttonGroup = {
+          increase: true,
+          view: false,
+          editor: false,
+          delete: false
+        };
+      } else {
+        this.buttonGroup = {
+          increase: true,
+          view: true,
+          editor: true,
+          delete: false
+        };
+      }
+    },
+    increaseArticle() {
+      this.showEditor = true;
+    },
+    closeArticle(){
+      this.showWraper = false;
+      this.$refs.multipleTable.clearSelection()
+    },
+    viewArticle() {
+      var parms = this.selection[0];
+      this.$http
+        .get("weekreport/view", { params: parms })
+        .then(response => {
+           this.markdownParser = marked(response.data);
+           this.showWraper = true
+           console.log(response);
+        });
+    },
+    editorArticle(row) {
+      console.log(row);
+    },
+    deleteArticle(row) {
+      console.log();
+    },
+    handleSelectionChange(row) {
+      this.selection = row;
+    },
+    submitForm() {
+      // 提交文档信息到服务
+      var information = this.$refs.form.model;
+      this.$http.post("weekreport/editor", information).then(response => {
+        console.log(response);
+      });
+    },
+    imageAdd(pos, $file) {
+      // 添加图片 并上传到七牛云 返回链接
+      console.log(pos, $file);
+      var formdata = new FormData();
+      formdata.append("image", $file);
+      this.$http.post("qiniu/image", formdata).then(response => {
+        this.$refs.md.$img2Url(pos, response.data);
+      });
+    },
+    handleScroll(){
+       console.log('滚动')
+    }
   }
 };
 </script>

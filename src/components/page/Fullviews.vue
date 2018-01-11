@@ -4,11 +4,15 @@
   }
 
   #fullviews .Fullviews {
-    padding: 20px;
+    padding: 20px 20px 0px;
   }
 
   #fullviews .fullviews-chart {
     margin-top: 60px;
+    padding: 10px 30px;
+  }
+
+  #fullviews .fullviews-list {
     padding: 10px 30px;
   }
 
@@ -26,7 +30,8 @@
   }
 
   #fullviews .el-icon-printer:before,
-  #fullviews .el-icon-picture-outline:before {
+  #fullviews .el-icon-picture-outline:before,
+  #fullviews .el-icon-tickets:before {
     font-size: 1.5rem;
     color: #24292e;
     margin-right: 1rem;
@@ -78,15 +83,77 @@
         </el-col>
       </el-row>
     </div>
-    <div class="fullviews-range">
+    <div class="fullviews-list">
       <el-row type="flex" justify="space-around">
-        <el-col :span="4">
-          <div class="grid-content">
-          </div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content"></div>
-        </el-col>
+          <el-col :span="8">
+            <div class="Fullviews">
+              <el-card>
+                <div slot="header">
+                  <i class="el-icon-picture-outline">打底裤</i>
+                  <div style="float: right;">
+                    <el-select v-model="storeName" placeholder="请选择">
+                      <el-option v-for="item in storeOption" :key="item" :label="item" :value="item">
+                      </el-option>
+                    </el-select>
+                  </div>
+                </div>
+                <el-table :data="tableData" style="width: 100%">
+                  <el-table-column prop="date" label="日期" width="180">
+                  </el-table-column>
+                  <el-table-column prop="name" label="姓名" width="180">
+                  </el-table-column>
+                  <el-table-column prop="address" label="地址">
+                  </el-table-column>
+                </el-table>
+              </el-card>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="Fullviews">
+              <el-card>
+                <div slot="header">
+                  <i class="el-icon-picture-outline">牛仔裤</i>
+                  <div style="float: right;">
+                    <el-select v-model="storeName" placeholder="请选择">
+                      <el-option v-for="item in storeOption" :key="item" :label="item" :value="item">
+                      </el-option>
+                    </el-select>
+                  </div>
+                </div>
+                <el-table :data="tableData" style="width: 100%">
+                  <el-table-column prop="date" label="日期" width="180">
+                  </el-table-column>
+                  <el-table-column prop="name" label="姓名" width="180">
+                  </el-table-column>
+                  <el-table-column prop="address" label="地址">
+                  </el-table-column>
+                </el-table>
+              </el-card>
+            </div>
+          </el-col>
+             <el-col :span="8">
+            <div class="Fullviews">
+              <el-card>
+                <div slot="header">
+                  <i class="el-icon-picture-outline">休闲裤</i>
+                  <div style="float: right;">
+                    <el-select v-model="storeName" placeholder="请选择">
+                      <el-option v-for="item in storeOption" :key="item" :label="item" :value="item">
+                      </el-option>
+                    </el-select>
+                  </div>
+                </div>
+                <el-table :data="tableData" style="width: 100%">
+                  <el-table-column prop="date" label="日期" width="180">
+                  </el-table-column>
+                  <el-table-column prop="name" label="姓名" width="180">
+                  </el-table-column>
+                  <el-table-column prop="address" label="地址">
+                  </el-table-column>
+                </el-table>
+              </el-card>
+            </div>
+          </el-col>
       </el-row>
     </div>
   </div>
@@ -123,6 +190,24 @@
           "#606266",
           "#606266"
         ],
+        listDate: new Date(Date.now() - 8.64e7),
+        tableData: [{
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        }],
         storePickerOptions: {
           shortcuts: [{
               text: "最近一周",
@@ -154,34 +239,20 @@
           ]
         },
         storeDateRange: [new Date(Date.now() - 7 * 8.64e7), new Date(Date.now() - 8.64e7)],
-        options: [{
-            value: "选项1",
-            label: "黄金糕"
-          },
-          {
-            value: "选项2",
-            label: "双皮奶"
-          },
-          {
-            value: "选项3",
-            label: "蚵仔煎"
-          },
-          {
-            value: "选项4",
-            label: "龙须面"
-          },
-          {
-            value: "选项5",
-            label: "北京烤鸭"
-          }
-        ],
         storeName: "",
         storeOption: []
       };
     },
     mounted() {
+      this.$http.get('fullviews/list', {
+        params: {
+          date: '2018-01-10'
+        }
+      }).then((response) => {
+        console.log(response)
+      })
       this.$http
-        .get("fullviews", {
+        .get("fullviews/chart", {
           params: {
             chartStyle: "bar",
             dateRange: this.storeDateRange
@@ -313,7 +384,7 @@
       getLineSerias(params) {
         this.storeName = params.name || '芮丽娅旗舰店'
         this.$http
-          .get("fullviews", {
+          .get("fullviews/chart", {
             params: {
               chartStyle: "line",
               storeName: this.storeName
