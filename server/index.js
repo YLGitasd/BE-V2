@@ -39,14 +39,13 @@ router.get('/fullviews/chart', (req, res) => {
 })
 router.get('/fullviews/list', (req, res) => {
   var date = req.query.date
-  console.log(date)
-  var data1 = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pr','varible':'打底裤','date':'" + date + "'}"], {
+  var data1 = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pr','category':'打底裤','date':'" + date + "'}"], {
     cwd: './server/python/script'
   }).stdout)
-  let data2 = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pr','category':'牛仔裤','date':'" + date + "'}"], {
+  var data2 = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pr','category':'牛仔裤','date':'" + date + "'}"], {
     cwd: './server/python/script'
   }).stdout)
-  let data3 = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pr','category':'休闲裤','date':'" + date + "'}"], {
+  var data3 = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pr','category':'休闲裤','date':'" + date + "'}"], {
     cwd: './server/python/script'
   }).stdout)
   res.send([data1,data2,data3])
@@ -266,7 +265,7 @@ router.get('/weekreport/view', (req, res) => {
         rawData += chunk
       })
       response.on('end', () => {
-        res.send(rawData)
+        res.send([title,rawData])
       })
     })
   })
