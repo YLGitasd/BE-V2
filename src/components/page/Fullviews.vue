@@ -10,6 +10,7 @@
 }
 
 #fullviews .fullviews-chart {
+  margin-top: 70px;
   padding: 10px 30px;
 }
 
@@ -37,13 +38,18 @@
   color: #24292e;
   margin-right: 1rem;
 }
+#fullviews .comment-table a {
+  color: #0366d6;
+  text-decoration-line: none;
+}
+#fullviews .comment-table a:hover {
+  color: rgba(3, 102, 204, 0.95);
+}
 </style>
 <template>
   <div id="fullviews">
     <common-header activeIndex="fullviews"></common-header>
-      <el-tabs type="border-card" style="marginTop: 60px;">
-      <el-tab-pane label="用户管理">
-      <div class="fullviews-chart">
+    <div class="fullviews-chart">
       <el-row>
         <el-col :span="10">
           <div class="Fullviews">
@@ -113,15 +119,8 @@
             </el-card>
           </div>
         </el-col>
-        <el-col :span="8">
-        </el-col>
-        <el-col :span="8">
-
-        </el-col>
       </el-row>
     </div>
-          </el-tab-pane>
-      </el-tabs>
   </div>
 </template>
 <script>
@@ -281,18 +280,6 @@ export default {
           selectedMode: "single",
           data: legendData
         },
-        toolbox: {
-          feature: {
-            dataZoom: {
-              yAxisIndex: "none"
-            },
-            magicType: {
-              type: ["line", "bar"]
-            },
-            restore: {},
-            saveAsImage: {}
-          }
-        },
         xAxis: [
           {
             type: "category",
@@ -395,7 +382,7 @@ export default {
             legend: {
               itemWidth: 20,
               selectedMode: "single",
-              data: ["在大理", "标准版"]
+              data: ["件数", "销售额"]
             },
             grid: {
               containLabel: true,
@@ -403,18 +390,11 @@ export default {
               right: "4%",
               bottom: "3%"
             },
-            toolbox: {
-              feature: {
-                dataZoom: {
-                  yAxisIndex: "none"
-                },
-                magicType: {
-                  type: ["line", "bar"]
-                },
-                restore: {},
-                saveAsImage: {}
-              }
-            },
+            dataZoom: [{
+              yAxisIndex:0,
+              type: "slider",
+              filterMode: 'empty'
+              }],
             xAxis: {
               type: "category",
               axisTick: {

@@ -107,7 +107,7 @@
         </el-col>
       </el-row>
     </div>
-    <el-tabs type="border-card" v-model="params.name">
+    <el-tabs class="comment-Body" type="border-card" v-model="params.name">
       <el-tab-pane label="属性详情" name="detail">
         <commonTable :tableData="tableBody" :tableTitle="tableTitle"></commonTable>
       </el-tab-pane>

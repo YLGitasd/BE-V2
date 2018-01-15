@@ -48,7 +48,7 @@ router.get('/fullviews/list', (req, res) => {
   var data3 = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pr','category':'休闲裤','date':'" + date + "'}"], {
     cwd: './server/python/script'
   }).stdout)
-  res.send([data1,data2,data3])
+  res.send([data1, data2, data3])
 })
 router.get('/product', (req, res) => {
   const table = req.query.name === 'hotseller' ? 'bc_attribute_granularity_sales' : 'bc_attribute_granularity_visitor'
@@ -154,18 +154,33 @@ router.get('/property', (req, res) => {
   res.send(data)
 })
 router.get('/property-deal', (req, res) => {
-  const spawnSync1 = spawnSync('python', ['xiaobaods_e.py', "{'attribute':'list'}"], {
-    cwd: './server/python'
-  })
-  const data = JSON.parse(spawnSync1.stdout)
-  const spawnSync2 = spawnSync('python', ['xiaobaods_e.py', "{'attribute':'" + data[0] + "','variable': 'all'}"], {
-    cwd: './server/python'
-  })
-  const data1 = JSON.parse(spawnSync2.stdout)
-  res.send({
-    data: data,
-    data1: data1
-  })
+  const {
+    productStyle: category,
+    dateTime,
+    listProper,
+  } = req.query
+  var date = dateTime.slice(0, 7)
+  if (listProper === '') {
+    const spawnSync1 = spawnSync('python', ['xiaobaods_e.py', "{'attribute':'list','variable':'all'}"], {
+      cwd: './server/python'
+    })
+    const list = JSON.parse(spawnSync1.stdout)
+    const spawnSync2 = spawnSync('python', ['xiaobaods_e.py', "{'date':'" + date + "','category':'" + category + "', 'attribute':'" + list[0] + "','variable': 'all'}"], {
+      cwd: './server/python'
+    })
+    const data = JSON.parse(spawnSync2.stdout)
+    console.log(data)
+    res.send({
+      list: list,
+      data: data
+    })
+  }else{
+    const spawnSync3 = spawnSync('python', ['xiaobaods_e.py', "{'date':'" + date + "','category':'" + category + "', 'attribute':'" + listProper + "','variable':'all'}"], {
+      cwd: './server/python'
+    })
+    const data = JSON.parse(spawnSync3.stdout)
+    res.send({data:data})
+  }
 })
 router.post('/property-deal', upload.single(), (req, res) => {
   fileSystem.writeFile('./server/uploads/html.txt', req.body.information, (err) => {
@@ -265,7 +280,7 @@ router.get('/weekreport/view', (req, res) => {
         rawData += chunk
       })
       response.on('end', () => {
-        res.send([title,rawData])
+        res.send([title, rawData])
       })
     })
   })
