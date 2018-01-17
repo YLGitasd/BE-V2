@@ -124,7 +124,8 @@
       <div slot="header">
         <i class="el-icon-document">周报列表</i>
         <div style="float: right;">
-          <el-input style="width:168px;margin-right:20px;" placeholder="搜索" v-model="input"></el-input>
+          <el-input style="width:198px;margin-right:20px;" placeholder="搜索文章" v-model="search" 
+          clearable  @change="weekportSearch" @focus="searchInfo"></el-input>
           <el-button icon="el-icon-plus" :disabled="buttonGroup.increase" @click="increaseArticle">增加</el-button>
           <el-button icon="el-icon-view" :disabled="buttonGroup.view" @click="viewArticle">查看</el-button>
           <el-button icon="el-icon-edit" :disabled="buttonGroup.editor" @click="editArticle">编辑</el-button>
@@ -134,7 +135,7 @@
       <div>
         <el-table v-show="!showEditor" ref="multipleTable" :data="tableData" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="id" label="#" width="50"></el-table-column>
+          <el-table-column type="index"width="50"></el-table-column>
           <el-table-column prop="date" label="上传时间"></el-table-column>
           <el-table-column prop="title" label="标题"></el-table-column>
           <el-table-column prop="editor" label="发布者"></el-table-column>
@@ -150,7 +151,7 @@
             <mavon-editor ref="md" :subfield="false" @imgAdd="imageAdd" v-model="form.mdString"></mavon-editor>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm">创建文章</el-button>
+            <el-button type="primary" @click="submitForm">{{buttonGroup.text}}</el-button>
             <el-button @click="showEditor = !showEditor">取消</el-button>
           </el-form-item>
         </el-form>
@@ -194,31 +195,23 @@ export default {
       isScroll: false,
       showWraper: false,
       markdownParser: "",
-      input: "",
+      search: "",
       showEditor: false,
       form: {
         title: "",
-        author: "顾园园",
+        editor: "顾园园",
         mdString: "",
         date: moment().format('YYYY-MM-DD')
       },
       selection: [],
       buttonGroup: {
+        text:'创建文章',
         increase: false,
         view: true,
         editor: true,
         delete: true
       },
-      tableData: [
-        {
-          date: "2016-05-08",
-          title: "春款牛仔注意事项",
-          author: "王小虎",
-          status: 200,
-          verifier: "张三",
-          amount: 333
-        }
-      ]
+      tableData: []
     }
   },
   watch: {
@@ -255,7 +248,19 @@ export default {
         }
       }
     },
+    searchInfo(){
+      this.$message({
+          message: "支持3种格式 例如：'2018','2018-01'和'2018 01'",
+          type: 'warning'
+        });
+    },
+    weekportSearch(){
+      this.$http.get("weekreport/filter",{params:{tags:this.search}}).then((response)=>{
+        this.tableData = response.data
+      })
+    },
     increaseArticle() {
+      this.buttonGroup.text='创建文章'
       this.showEditor = true
     },
     closeArticle(){
@@ -273,6 +278,7 @@ export default {
         })
     },
     editArticle() {
+      this.buttonGroup.text='编辑文章'
       var parms = this.selection[0]
       this.$http
         .get("weekreport/view", { params: parms })

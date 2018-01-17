@@ -58,7 +58,7 @@
                 <i class="el-icon-printer">店铺一览</i>
                 <div style="float: right;">
                   <el-date-picker v-model="storeDateRange" type="daterange" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="storePickerOptions"
-                    value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" @change="storeDateRangeChange">
+                    value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日">
                   </el-date-picker>
                 </div>
               </div>
@@ -72,7 +72,7 @@
               <div slot="header">
                 <i class="el-icon-picture-outline">店铺详情</i>
                 <div style="float: right;">
-                  <el-select v-model="storeName" placeholder="请选择">
+                  <el-select v-model="storeName" placeholder="请选择" @change="getLineSerias(storeName)">
                     <el-option v-for="item in storeOption" :key="item" :label="item" :value="item">
                     </el-option>
                   </el-select>
@@ -182,28 +182,28 @@ export default {
           {
             text: "最近一周",
             onClick(picker) {
-              const end = new Date(Date.now() - 8.64e7);
-              const start = new Date();
-              start.setTime(start.getTime() - 8.64e7 * 7);
-              picker.$emit("pick", [start, end]);
+              const end = new Date(Date.now() - 8.64e7)
+              const start = new Date()
+              start.setTime(start.getTime() - 8.64e7 * 7)
+              picker.$emit("pick", [start, end])
             }
           },
           {
             text: "最近一个月",
             onClick(picker) {
-              const end = new Date(Date.now() - 8.64e7);
-              const start = new Date();
-              start.setTime(start.getTime() - 8.64e7 * 30);
-              picker.$emit("pick", [start, end]);
+              const end = new Date(Date.now() - 8.64e7)
+              const start = new Date()
+              start.setTime(start.getTime() - 8.64e7 * 30)
+              picker.$emit("pick", [start, end])
             }
           },
           {
             text: "最近三个月",
             onClick(picker) {
-              const end = new Date(Date.now() - 8.64e7);
-              const start = new Date();
+              const end = new Date(Date.now() - 8.64e7)
+              const start = new Date()
               start.setTime(start.getTime() - 8.64e7 * 90);
-              picker.$emit("pick", [start, end]);
+              picker.$emit("pick", [start, end])
             }
           }
         ]
@@ -216,6 +216,9 @@ export default {
       storeOption: []
     };
   },
+  watch:{
+    storeDateRange:"storeDateRangeChange"
+  },
   mounted() {
     this.$http
       .get("fullviews/list", {
@@ -225,11 +228,15 @@ export default {
       })
       .then(response => {
         this.listOption.map((items, key) => {
-          items.data = Object.values(response.data[key]);
-        });
-      });
-    this.$http
-      .get("fullviews/chart", {
+          items.data = Object.values(response.data[key])
+        })
+      })
+    this.storeDateRangeChange()
+    
+  },
+  methods: {
+    storeDateRangeChange() {
+      this.$http.get("fullviews/chart", {
         params: {
           chartStyle: "bar",
           dateRange: this.storeDateRange
@@ -238,28 +245,21 @@ export default {
       .then(response => {
         this.setSerias(response.data);
       });
-    this.getLineSerias({
-      name: this.storeName
-    });
-  },
-  methods: {
-    storeDateRangeChange() {
-      console.log(this.storeDateRange);
     },
     setSerias(fulldata) {
-      var myechart = myEchart.init(document.getElementById("myEchartBar"));
-      var legendData = Object.keys(fulldata[0]).slice(-2);
-      var xAxisData = Object.values(fulldata).map(items => {
-        return items["店铺"];
-      });
-      this.storeOption = xAxisData;
-      this.storeName = xAxisData[0];
+      var myechart = myEchart.init(document.getElementById("myEchartBar"))
+      var legendData = Object.keys(fulldata[0]).slice(-2)
+      this.storeOption = Object.values(fulldata).map(items => {
+        return items["店铺"]
+      })
+      this.storeName = this.storeOption[0]
+      this.getLineSerias(this.storeName)
       var seriasData0 = Object.values(fulldata).map(items => {
-        return items["销售额"];
-      });
+        return items["销售额"]
+      })
       var seriasData1 = Object.values(fulldata).map(items => {
-        return items["件数"];
-      });
+        return items["件数"]
+      })
       // 指定图表的配置项和数据
       var option = {
         color: this.color,
@@ -290,7 +290,7 @@ export default {
             axisLabel: {
               rotate: 30
             },
-            data: xAxisData
+            data: this.storeOption
           }
         ],
         yAxis: {
@@ -318,7 +318,7 @@ export default {
       // 处理点击事件并且跳转到相应的百度搜索页面
       var _this = this;
       myechart.on("click", function(params) {
-        _this.getLineSerias(params);
+        _this.getLineSerias(params.name);
       });
       myechart.on("legendselectchanged", function(params) {
         option.yAxis.name = params.name;
@@ -350,8 +350,8 @@ export default {
         };
       }
     },
-    getLineSerias(params) {
-      this.storeName = params.name || "芮丽娅旗舰店";
+    getLineSerias(name) {
+      this.storeName = name 
       this.$http
         .get("fullviews/chart", {
           params: {
@@ -361,10 +361,7 @@ export default {
         })
         .then(response => {
           var fulldata = response.data;
-          var storeNameX = Object.keys(fulldata).map(items => {
-            return moment(new Date(+items)).format("YYYY-MM-DD");
-          });
-
+          var storeNameX = Object.keys(fulldata)
           var seriasData0 = Object.values(fulldata).map(items => {
             return items["销售额"];
           });
@@ -393,13 +390,16 @@ export default {
             dataZoom: [{
               yAxisIndex:0,
               type: "slider",
-              filterMode: 'empty'
+              filterMode: 'none'
               }],
             xAxis: {
               type: "category",
               axisTick: {
                 alignWithLabel: true,
                 show: false
+              },
+              axisLabel: {
+                rotate: 30
               },
               data: storeNameX
             },
@@ -413,16 +413,16 @@ export default {
               {
                 name: "件数",
                 smooth: true,
-                type: "line",
-                symbolSize: 8,
+                type: "bar",
+                // symbolSize: 8,
                 symbol: "circle",
                 data: seriasData1
               },
               {
                 name: "销售额",
                 smooth: true,
-                type: "line",
-                symbolSize: 8,
+                type: "bar",
+                // symbolSize: 8,
                 symbol: "circle",
                 data: seriasData0
               }

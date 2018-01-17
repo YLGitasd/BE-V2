@@ -25,7 +25,7 @@ router.get('/fullviews/chart', (req, res) => {
   const style = req.query.chartStyle
   if (style && style === 'bar') {
     var dateRange = req.query.dateRange
-    let data = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'ps','date':'" + dateRange[0] + "','date_range':'" + dateRange[0] + "'}"], {
+    let data = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'ps','date':'" + dateRange[0] + "','date_range':'" + dateRange[1] + "'}"], {
       cwd: './server/python/script'
     }).stdout)
     res.send(data)
@@ -153,35 +153,7 @@ router.get('/property', (req, res) => {
   const data = JSON.parse(spawnSync1.stdout)
   res.send(data)
 })
-router.get('/property-deal', (req, res) => {
-  const {
-    productStyle: category,
-    dateTime,
-    listProper,
-  } = req.query
-  var date = dateTime.slice(0, 7)
-  if (listProper === '') {
-    const spawnSync1 = spawnSync('python', ['xiaobaods_e.py', "{'attribute':'list','variable':'all'}"], {
-      cwd: './server/python'
-    })
-    const list = JSON.parse(spawnSync1.stdout)
-    const spawnSync2 = spawnSync('python', ['xiaobaods_e.py', "{'date':'" + date + "','category':'" + category + "', 'attribute':'" + list[0] + "','variable': 'all'}"], {
-      cwd: './server/python'
-    })
-    const data = JSON.parse(spawnSync2.stdout)
-    console.log(data)
-    res.send({
-      list: list,
-      data: data
-    })
-  }else{
-    const spawnSync3 = spawnSync('python', ['xiaobaods_e.py', "{'date':'" + date + "','category':'" + category + "', 'attribute':'" + listProper + "','variable':'all'}"], {
-      cwd: './server/python'
-    })
-    const data = JSON.parse(spawnSync3.stdout)
-    res.send({data:data})
-  }
-})
+
 router.post('/property-deal', upload.single(), (req, res) => {
   fileSystem.writeFile('./server/uploads/html.txt', req.body.information, (err) => {
     if (err) throw err
@@ -242,6 +214,8 @@ router.post('/weekreport/editor', (req, res) => {
       })
     }
     if (respInfo.statusCode == 200) {
+      let tag = date.slice(0, 4) +'|' + date.slice(0, 7) +'|'+ date.slice(0, 7).replace(/-/g,' ')
+      console.log(tag)
       var escapeData = {
         id: '',
         date: date,
@@ -250,7 +224,8 @@ router.post('/weekreport/editor', (req, res) => {
         editor: editor,
         status: 302,
         readers: 0,
-        verifier: '待审核'
+        verifier: '待审核',
+        tag:tag
       }
       pool.query('INSERT INTO `week_article` SET ?', escapeData, function (err, result) {
         if (err) throw (err)
@@ -267,22 +242,32 @@ router.post('/weekreport/editor', (req, res) => {
     }
   })
 })
-router.get('/weekreport/view', (req, res) => {
+router.get('/weekreport/view', (req, resp) => {
   var filedate = moment(req.query.date).format('YYYY-MM-DD')
   var title = req.query.title
   pool.query("SELECT name FROM week_article WHERE date = ? and title = ?", [filedate, title], function (err, result) {
     if (err) throw (err)
     var urlsToPrefetch = 'http://owvh3ep5x.bkt.clouddn.com/' + Object.values(result[0])
-    http.get(urlsToPrefetch, (response) => {
+    http.get(urlsToPrefetch, (res) => {
       var rawData = ''
-      response.setEncoding('utf8')
-      response.on('data', (chunk) => {
+      res.setEncoding('utf8')
+      res.on('data', (chunk) => {
         rawData += chunk
       })
-      response.on('end', () => {
-        res.send([title, rawData])
+      res.on('end', () => {
+        resp.send([title, rawData])
       })
     })
+  })
+})
+router.get('/weekreport/filter', (req, res) => {
+  var tags = req.query.tags
+  var clearsql = "SELECT * FROM week_article"
+  var filtersql = "SELECT * FROM week_article WHERE tag LIKE "+ pool.escape('%'+req.query.tags+'|%')
+  var sql = tags ==='' ? clearsql : filtersql
+  pool.query(sql, function (err, result) {
+    if (err) throw (err)
+    res.send(result)
   })
 })
 router.get('/tool-box', (req, res) => {
@@ -294,5 +279,46 @@ router.get('/tool-box', (req, res) => {
       res.send(results[0])
     }
   })
+})
+router.get('/property-deal-list', (req, res) => {
+
+  const {date,attribute,variable,category} = req.query
+  var string = "{'date':'" + date + "','category':'" + category + "','attribute':'" + attribute + "','variable':'" + variable + "'}"
+  const spawnSync1 = spawnSync('python', ['xiaobaods_e.py', string],{cwd:'./server/python'})
+  var data = JSON.parse(spawnSync1.stdout)
+  var size = Buffer.byteLength(spawnSync1.stdout)
+  
+  res.send({
+    size:size,
+    data: data
+  })
+})
+router.get('/property-deal-trend', (req, res) => {
+  var query = req.query
+  if (query.attribute == 'list' || query.feature == 'list') {
+    var string = JSON.stringify(query).replace(/\"/g, "'")
+    const spawnSync1 = spawnSync('python', ['xiaobaods_et.py', string],{cwd:'./server/python'})
+    var data = JSON.parse(spawnSync1.stdout)
+    res.send({
+      data: data
+    })
+  } else {
+    var string0 = "{'category':'" + query.category + "','attribute':'" + query.attribute + "','variable':'" + query.variable + "','feature':'all'}"
+    var string1 = "{'category':'" + query.category + "','attribute':'" + query.attribute + "','variable':'" + query.variable + "','feature':'" + query.feature + "','stats':0}"
+    var string2 = "{'category':'" + query.category + "','attribute':'" + query.attribute + "','variable':'" + query.variable + "','feature':'" + query.feature + "','stats':1}"
+    const spawnSync0 = spawnSync('python', ['xiaobaods_et.py', string0],{cwd:'./server/python'})
+    const spawnSync1 = spawnSync('python', ['xiaobaods_et.py', string1],{cwd:'./server/python'})
+    const spawnSync2 = spawnSync('python', ['xiaobaods_et.py', string2],{cwd:'./server/python'})
+
+    var data0 = JSON.parse(spawnSync0.stdout)
+    var data1 = JSON.parse(spawnSync1.stdout)
+    var data2 = JSON.parse(spawnSync2.stdout)
+ 
+    res.send({
+      data0: data0,
+      data1: data1,
+      data2: data2
+    })
+  }
 })
 module.exports = router
