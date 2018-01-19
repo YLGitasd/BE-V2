@@ -11,7 +11,7 @@
   margin: 100px auto;
   width: 80%;
 }
-#weekport .portList .v-note-wrapper{
+#weekport .portList .v-note-wrapper {
   z-index: 0;
 }
 #weekport .portList .el-icon-document:before {
@@ -69,7 +69,7 @@
   padding: 10px;
 }
 
-#weekport > .portbody > .beat-rows > .beat-rows-prev > i {
+#weekport > .portbody > .beat-rows > .beat-rows-prev > button > i {
   font-size: 3em;
 }
 
@@ -79,7 +79,7 @@
   padding: 10px;
 }
 
-#weekport > .portbody > .beat-rows > .beat-rows-next > i {
+#weekport > .portbody > .beat-rows > .beat-rows-next > button > i {
   font-size: 3em;
 }
 
@@ -129,7 +129,7 @@
           <el-button icon="el-icon-plus" :disabled="buttonGroup.increase" @click="increaseArticle">增加</el-button>
           <el-button icon="el-icon-view" :disabled="buttonGroup.view" @click="viewArticle">查看</el-button>
           <el-button icon="el-icon-edit" :disabled="buttonGroup.editor" @click="editArticle">编辑</el-button>
-          <el-button icon="el-icon-delete" :disabled="buttonGroup.delete" @click="deleteArticle">删除</el-button>
+          <el-button icon="el-icon-check" :disabled="buttonGroup.check" @click="checkArticle">审阅</el-button>
         </div>
       </div>
       <div>
@@ -164,11 +164,11 @@
       <!-- 周报容器：body-wraper -->
       <div class="body-wraper" v-html="markdownParser"></div>
       <div class="beat-rows">
-        <div class="beat-rows-prev">
-          <i class="el-icon-arrow-left"></i>
+        <div class="beat-rows-prev"  @click="prevArticle">
+          <el-button type="text" :disabled="buttonGroup.prevarow" icon="el-icon-arrow-left"></el-button>
         </div>
-        <div class="beat-rows-next">
-          <i class="el-icon-arrow-right"></i>
+        <div class="beat-rows-next" @click="nextArticle">
+          <el-button type="text" :disabled="buttonGroup.nextarow" icon="el-icon-arrow-right"></el-button>
         </div>
       </div>
       <div class="beat-skips">
@@ -183,9 +183,9 @@
   </div>
 </template>
 <script>
-import commonHeader from "../common/Header.vue"
-import marked from "marked"
-import moment from "moment"
+import commonHeader from "../common/Header.vue";
+import marked from "marked";
+import moment from "moment";
 export default {
   components: {
     commonHeader
@@ -201,115 +201,147 @@ export default {
         title: "",
         editor: "顾园园",
         mdString: "",
-        date: moment().format('YYYY-MM-DD')
+        date: moment().format("YYYY-MM-DD")
       },
+      order: 0,
       selection: [],
       buttonGroup: {
-        text:'创建文章',
+        text: "创建文章",
+        prevarow: false,
+        nextarow: false,
         increase: false,
         view: true,
         editor: true,
-        delete: true
+        check: true
       },
       tableData: []
-    }
+    };
   },
   watch: {
-    selection: "buttonDisable"
+    selection: "buttonDisable",
+    order: function(val){
+      if(val == this.tableData.length){
+        this.buttonGroup.prevarow = true;
+      }else{
+        this.buttonGroup.prevarow = false;
+      }
+     if (val==1) {
+        this.buttonGroup.nextarow = true;
+      } else {
+        this.buttonGroup.nextarow = false;
+      }
+    }
   },
   mounted() {
     this.$http.get("weekreport").then(response => {
-      this.tableData = response.data
-    })
+      this.tableData = response.data;
+    });
   },
   methods: {
     buttonDisable() {
-      var selectionLength = this.selection.length
+      var selectionLength = this.selection.length;
       if (selectionLength == 0) {
         this.buttonGroup = {
           increase: false,
           view: true,
           editor: true,
-          delete: true
-        }
+          check: true
+        };
       } else if (selectionLength == 1) {
         this.buttonGroup = {
           increase: true,
           view: false,
           editor: false,
-          delete: false
-        }
+          check: false
+        };
       } else {
         this.buttonGroup = {
           increase: true,
           view: true,
           editor: true,
-          delete: false
-        }
+          check: false
+        };
       }
     },
-    searchInfo(){
+    searchInfo() {
       this.$message({
-          message: "支持3种格式 例如：'2018','2018-01'和'2018 01'",
-          type: 'warning'
+        message: "支持3种格式 例如：'2018','2018-01'和'2018 01'",
+        type: "warning"
+      });
+    },
+    weekportSearch() {
+      this.$http
+        .get("weekreport/filter", { params: { tags: this.search } })
+        .then(response => {
+          this.tableData = response.data;
         });
     },
-    weekportSearch(){
-      this.$http.get("weekreport/filter",{params:{tags:this.search}}).then((response)=>{
-        this.tableData = response.data
-      })
-    },
     increaseArticle() {
-      this.buttonGroup.text='创建文章'
-      this.showEditor = true
+      this.buttonGroup.text = "创建文章";
+      this.showEditor = true;
     },
-    closeArticle(){
-      this.showWraper = false
-      this.$refs.multipleTable.clearSelection()
+    closeArticle() {
+      this.showWraper = false;
+      this.$refs.multipleTable.clearSelection();
     },
     viewArticle() {
-      var parms = this.selection[0]
-      this.$http
-        .get("weekreport/view", { params: parms })
-        .then(response => {
-           this.markdownParser = marked(response.data[1])
-           this.showWraper = true
-           console.log(response)
-        })
+      var parms = this.selection[0];
+      this.$http.get("weekreport/view", { params: parms }).then(response => {
+        this.markdownParser = marked(response.data[1]);
+        this.showWraper = true;
+      });
     },
     editArticle() {
-      this.buttonGroup.text='编辑文章'
-      var parms = this.selection[0]
-      this.$http
-        .get("weekreport/view", { params: parms })
-        .then(response => {
-          this.showEditor = true
-          this.form.title = response.data[0]
-          this.form.mdString = response.data[1]
-        })
+      this.buttonGroup.text = "编辑文章";
+      var parms = this.selection[0];
+      this.$http.get("weekreport/view", { params: parms }).then(response => {
+        this.showEditor = true;
+        this.form.title = response.data[0];
+        this.form.mdString = response.data[1];
+      });
     },
-    deleteArticle(row) {
-      console.log()
+    checkArticle() {
+      this.buttonGroup.text = "提交审阅";
+    },
+    prevArticle() {
+      ++this.order;
+      this.$http
+        .get("weekreport/switch", { params: { order: this.order } })
+        .then(response => {
+          this.markdownParser = marked(response.data);
+        });
+
+    },
+    nextArticle() {
+      --this.order;
+        this.$http
+          .get("weekreport/switch", { params: { order: this.order } })
+          .then(response => {
+            this.markdownParser = marked(response.data);
+          });
     },
     handleSelectionChange(row) {
-      this.selection = row
+      this.selection = row;
+      if(this.selection.length ==1){
+        this.order = this.selection[0].id;
+      }
     },
     submitForm() {
       // 提交文档信息到服务
-      var information = this.$refs.form.model
+      var information = this.$refs.form.model;
       this.$http.post("weekreport/editor", information).then(response => {
-        console.log(response)
-      })
+        console.log(response);
+      });
     },
     imageAdd(pos, $file) {
       // 添加图片 并上传到七牛云 返回链接
-      console.log(pos, $file)
-      var formdata = new FormData()
-      formdata.append("image", $file)
+      console.log(pos, $file);
+      var formdata = new FormData();
+      formdata.append("image", $file);
       this.$http.post("qiniu/image", formdata).then(response => {
-        this.$refs.md.$img2Url(pos, response.data)
-      })
+        this.$refs.md.$img2Url(pos, response.data);
+      });
     }
   }
-}
+};
 </script>

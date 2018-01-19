@@ -244,8 +244,8 @@ router.post('/weekreport/editor', (req, res) => {
 })
 router.get('/weekreport/view', (req, resp) => {
   var filedate = moment(req.query.date).format('YYYY-MM-DD')
-  var title = req.query.title
-  pool.query("SELECT name FROM week_article WHERE date = ? and title = ?", [filedate, title], function (err, result) {
+  var {title} = req.query
+  pool.query("SELECT name FROM week_article WHERE date = ? and title = ?",[filedate,title], function (err, result) {
     if (err) throw (err)
     var urlsToPrefetch = 'http://owvh3ep5x.bkt.clouddn.com/' + Object.values(result[0])
     http.get(urlsToPrefetch, (res) => {
@@ -256,6 +256,25 @@ router.get('/weekreport/view', (req, resp) => {
       })
       res.on('end', () => {
         resp.send([title, rawData])
+      })
+    })
+  })
+})
+router.get('/weekreport/switch', (req, resp) => {
+  var {order} = req.query
+  console.log(order)
+  pool.query("SELECT name FROM week_article WHERE id = ?",[order], function (err, result) {
+    if (err) throw (err)
+    var urlsToPrefetch = 'http://owvh3ep5x.bkt.clouddn.com/' + Object.values(result[0])
+    console.log(urlsToPrefetch)
+    http.get(urlsToPrefetch, (res) => {
+      var rawData = ''
+      res.setEncoding('utf8')
+      res.on('data', (chunk) => {
+        rawData += chunk
+      })
+      res.on('end', () => {
+        resp.send(rawData)
       })
     })
   })
