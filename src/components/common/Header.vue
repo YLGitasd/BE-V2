@@ -19,7 +19,7 @@
       <el-menu-item index="property-deal">生e经</el-menu-item>
       <el-menu-item index="weekport">文件夹</el-menu-item>
       <el-menu-item index="tool-box">工具箱</el-menu-item>
-      <el-menu-item index="user" style="positon:absolute;right:10px;">用户</el-menu-item>
+      <el-menu-item index="user/login">{{user}}</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -30,6 +30,10 @@ export default {
     activeIndex: {
       type: String,
       default: "/"
+    },
+    user:{
+     type: String,
+    default: "登录"
     }
   },
   methods: {

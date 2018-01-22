@@ -7,6 +7,7 @@ import Vuex from 'vuex'
 import products from './modules/products'
 import world from './modules/world'
 import home from './modules/home'
+import user from './modules/user'
 import property from './modules/property'
 
 Vue.use(Vuex)
@@ -20,6 +21,7 @@ export default new Vuex.Store({
   modules: {
     products,
     home,
+    user,
     world,
     property
   },

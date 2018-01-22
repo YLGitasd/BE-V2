@@ -5,6 +5,8 @@ const config = require('../config')
 const merge = require('webpack-merge')
 const express = require('express')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
 const history = require('connect-history-api-fallback')
 const baseWebpackConfig = require('./webpack.base.conf')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -42,6 +44,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
     before(app) {
      app.use(history())
+     app.use(cookieParser())
+     app.use(session({ secret: 'xiaobaods shujuzu', cookie: { maxAge: 14400000 }}))
      app.use(bodyParser.urlencoded({ extended: true, limit:'10mb'}))
      app.use(bodyParser.json({limit:'10mb'}))
      app.use(require('../server/index'))

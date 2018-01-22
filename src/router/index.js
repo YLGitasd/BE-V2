@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HomePage from '@/components/HomePage'
 
 Vue.use(Router)
 
@@ -9,15 +8,25 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HomePage',
-      component: HomePage
-    },
-    {
-      path: '/login/',
-      name: 'UserLogin',
+      name: 'Home',
       component: function (resolve) {
-        require(['@/components/user/Login.vue'], resolve)
+        require(['@/components/Home.vue'], resolve)
       }
+    },
+    // {
+    //   path: 'home',
+    //   name: 'Home',
+    //   component: function (resolve) {
+    //     require(['@/components/Home.vue'], resolve)
+    //   }
+    // },
+    {
+      path: '/user/:path',
+      name: 'User',
+      component: function (resolve) {
+        require(['@/components/User.vue'], resolve)
+      },
+      props: true
     },
     {
       path: '/fullviews',
@@ -70,7 +79,6 @@ export default new Router({
     },
     {
       path: '*',
-      name: '404Page',
       component: function (resolve) {
         require(['@/components/404page.vue'], resolve)
       }

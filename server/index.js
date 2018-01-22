@@ -63,30 +63,13 @@ router.get('/product', (req, res) => {
   const lineb = pageSize * (pageCurrent - 1)
   const linef = pageSize * pageCurrent
   const parms = "{'fun':'a','table':'" + table + "','date':'" + date + "','line_b':" + lineb + ",'line_f':" + linef + ",'category':'" + category + "','variable':'" + variable + "','length':" + length + '}'
-  const spawnSync1 = spawnSync('python', ['xiaobaods.py', parms], {
-    cwd: './server/python'
+  const spawnSync1 = spawnSync('python', ['xiaobaods_output', parms], {
+    cwd: './server/python/script'
   })
   const data = JSON.parse(spawnSync1.stdout)
   res.send(data)
 })
 router.get('/world', (req, res) => {
-  if (req.query.name === 'flash') {
-    const {
-      productStyle: category,
-      dateTime: date,
-      attribute: choice,
-      extraShown: variable,
-      timeLen: length,
-      stepNumbe: head
-    } = req.query
-    const parms = "{'choice':'" + choice + "','date':'" + date + "','category':'" + category + "','variable':'" + variable + "'head':" + head + ",'length':" + length + '}'
-    const spawnSync1 = spawnSync('python', ['xiaobaods_ws.py', parms], {
-      cwd: './server/python'
-    })
-    const data = JSON.parse(spawnSync1.stdout)
-    res.send(data)
-  } else {
-    let name = 'w'
     const {
       productStyle: category,
       dateTime: date,
@@ -98,13 +81,12 @@ router.get('/world', (req, res) => {
     } = req.query
     const lineb = pageSize * (pageCurrent - 1)
     const linef = pageSize * pageCurrent
-    const parms = "{'fun':'" + name + "','choice':'" + choice + "','date':'" + date + "','line_b':" + lineb + ",'line_f':" + linef + ",'category':'" + category + "','variable':'" + variable + "','length':" + length + '}'
-    const spawnSync1 = spawnSync('python', ['xiaobaods.py', parms], {
-      cwd: './server/python'
+    const parms = "{'fun':'w','choice':'" + choice + "','date':'" + date + "','line_b':" + lineb + ",'line_f':" + linef + ",'category':'" + category + "','variable':'" + variable + "','length':" + length + '}'
+    const spawnSync1 = spawnSync('python', ['xiaobaods_output', parms], {
+      cwd: './server/python/script'
     })
     const data = JSON.parse(spawnSync1.stdout)
     res.send(data)
-  }
 })
 router.get('/world/attribute.json', (req, res) => {
   const activeName = req.query.name
@@ -147,8 +129,8 @@ router.get('/property', (req, res) => {
   const lineb = pageSize * (pageCurrent - 1)
   const linef = pageSize * pageCurrent
   const parms = "{'fun':'c','table':'" + table + "','date':'" + date + "','line_b':" + lineb + ",'line_f':" + linef + ",'category':'" + category + "','variable':'" + variable + "','classification':'" + classification + "','attributes':'" + attributes + "','length':" + length + '}'
-  const spawnSync1 = spawnSync('python', ['xiaobaods.py', parms], {
-    cwd: './server/python'
+  const spawnSync1 = spawnSync('python', ['xiaobaods_output', parms], {
+    cwd: './server/python/script'
   })
   const data = JSON.parse(spawnSync1.stdout)
   res.send(data)
@@ -337,6 +319,20 @@ router.get('/property-deal-trend', (req, res) => {
       data0: data0,
       data1: data1,
       data2: data2
+    })
+  }
+})
+
+router.post('/user/:path', (req,res)=>{
+  if(req.params.path == 'login'){
+    var user = req.body
+    pool.query('SELECT * FROM `xiaobaods_users_tables` WHERE `name` = ? and `password` = ?', [user.name,user.password], function (err, results) {
+      if (err) throw err
+      if(results.length<1){
+        res.send({code:404,msg:'密码或用户名错误',user:null})
+      }else{
+        res.send({code:200,msg:'登录成功',user:results[0]})
+      }
     })
   }
 })

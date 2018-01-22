@@ -5,7 +5,7 @@
     top:30px;
     padding: 0px;
     height: calc(100vh - 300px);
-    background:url('../../assets/background-image.jpg') no-repeat center;
+    background:url('./../assets/background-image.jpg') no-repeat center;
   }
 
   .el-footer {
@@ -21,10 +21,10 @@
   <div id="User-login">
     <el-container>
       <el-header>
-        <img src="../../assets/logo-title.png" style="height:80px;" alt="">
+        <img src="./../assets/logo-title.png" style="height:80px;" alt="">
       </el-header>
       <el-main>
-            <commonValidator></commonValidator>
+        <commonValidator></commonValidator>
       </el-main>
       <el-footer>
         <commonFooter></commonFooter>
@@ -33,9 +33,10 @@
   </div>
 </template>
 <script>
-  import commonFooter from '../common/Footer.vue';
-  import commonValidator from '../common/Validator.vue';
+  import commonFooter from './common/Footer.vue';
+  import commonValidator from './common/Validator.vue';
   export default {
+    props: ['path'],
     components: {
       commonFooter,
       commonValidator

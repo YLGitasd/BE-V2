@@ -26,8 +26,7 @@ const state = {
     dateTime: api.formaterDate(Date.now() - 8.64e7, 'YYYY-MM-DD'),
     timeLen: 7,
     pageSize: 20,
-    pageCurrent: 1,
-    stepNumbe: 10
+    pageCurrent: 1
   },
   chinOptions: [],
   tableData: {

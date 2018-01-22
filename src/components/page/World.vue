@@ -108,9 +108,6 @@
               </el-option>
             </el-select>
           </span>
-          <span v-show="params.name=='flash'">
-          <el-input-number v-model="params.stepNumbe" size='small' :step="5" :min="10"></el-input-number>
-          </span>
         </el-col>
       </el-row>
     </div>
@@ -121,11 +118,7 @@
       <el-tab-pane label="飙升搜索词" name="increase">
         <commonTable v-show="params.name=='increase'" :tableData="tableBody" :tableTitle="tableTitle"></commonTable>
       </el-tab-pane>
-      <el-tab-pane label="急速飙升词" name="flash">
-        <commonTable v-show="params.name=='flash'" :tableData="tableBody" :tableTitle="tableTitle"></commonTable>
-      </el-tab-pane>
-      <el-pagination v-show="(params.name!=='flash' || params.stepNumbe > 20)"
-        @size-change="sizeChange" :page-size="params.pageSize" @current-change="currentChange" :current-page="params.pageCurrent"
+      <el-pagination @size-change="sizeChange" :page-size="params.pageSize" @current-change="currentChange" :current-page="params.pageCurrent"
         :page-sizes="[20, 50, 100]" :total="tableTotal" layout="total, sizes, prev, pager, next, jumper">
       </el-pagination>
     </el-tabs>
@@ -164,8 +157,7 @@ export default {
         dateTime: new Date(Date.now() - 8.64e7),
         timeLen: 7,
         pageSize: 20,
-        pageCurrent: 1,
-        stepNumbe: 10
+        pageCurrent: 1
       }
     };
   },
