@@ -38,17 +38,12 @@ router.get('/fullviews/chart', (req, res) => {
   }
 })
 router.get('/fullviews/list', (req, res) => {
-  var date = req.query.date
-  var data1 = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pr','category':'打底裤','date':'" + date + "'}"], {
+  const {name}  = req.query
+  var date = moment(req.query.date).format('YYYY-MM-DD')
+  var data = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pr','category':'" + name + "','date':'" + date + "'}"], {
     cwd: './server/python/script'
   }).stdout)
-  var data2 = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pr','category':'牛仔裤','date':'" + date + "'}"], {
-    cwd: './server/python/script'
-  }).stdout)
-  var data3 = JSON.parse(spawnSync('python', ['xiaobaods_output', "{'fun':'pr','category':'休闲裤','date':'" + date + "'}"], {
-    cwd: './server/python/script'
-  }).stdout)
-  res.send([data1, data2, data3])
+  res.send(data)
 })
 router.get('/product', (req, res) => {
   const table = req.query.name === 'hotseller' ? 'bc_attribute_granularity_sales' : 'bc_attribute_granularity_visitor'
@@ -197,7 +192,6 @@ router.post('/weekreport/editor', (req, res) => {
     }
     if (respInfo.statusCode == 200) {
       let tag = date.slice(0, 4) +'|' + date.slice(0, 7) +'|'+ date.slice(0, 7).replace(/-/g,' ')
-      console.log(tag)
       var escapeData = {
         id: '',
         date: date,
@@ -323,17 +317,50 @@ router.get('/property-deal-trend', (req, res) => {
   }
 })
 
-router.post('/user/:path', (req,res)=>{
-  if(req.params.path == 'login'){
-    var user = req.body
+router.post('/user/:type', (req,res)=>{
+  var user = req.body
+  var type = req.params.type
+  if(type == 'login'){
     pool.query('SELECT * FROM `xiaobaods_users_tables` WHERE `name` = ? and `password` = ?', [user.name,user.password], function (err, results) {
       if (err) throw err
-      if(results.length<1){
+      if(results.length < 1){
         res.send({code:404,msg:'密码或用户名错误',user:null})
       }else{
         res.send({code:200,msg:'登录成功',user:results[0]})
       }
     })
+  }else if(type == 'modify'){
+    pool.query('SELECT password FROM `xiaobaods_users_tables` WHERE `name` = ? and `id`= ?', [user.name, user.id], function (err, results) {
+      if (err) throw err
+      if(results.length < 1){
+        res.send({code:404,msg:'邀请码或用户名错误'})
+      }else{
+        res.send({code:200,msg:'查询成功',password:results[0].password})
+      }
+    })
+  }else if(type == 'register'){
+    pool.query("SELECT * FROM `xiaobaods_users_tables` WHERE `id` = ?", [user.id], function (err, results) {
+      if (err) throw err
+      if (results.length < 1) {
+        res.send({
+          code:404,
+          msg: "邀请码错误"
+        })
+      } else {
+        if(results[0].name = user.name){
+          res.send({code:404,msg:'您已经注册过了，如果忘记密码，点击找回'})
+        }else{
+          pool.query("UPDATE xiaobaods_users_tables SET `name`=?,`password`=? where `id` = ?", [user.name, user.password, user.id], function (err, results) {
+            if (err) throw err
+            else {
+              res.send({code:200,msg:'注册成功，邀请码妥善保存!'})
+            }
+          })
+        }
+      }
+    })
+  }else{
+    res.send('路径不合法')
   }
 })
 module.exports = router

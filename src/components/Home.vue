@@ -13,6 +13,7 @@
   #Home .comment-Body .container {
     text-align: center;
     height: 100%;
+    z-index: 10;
     top: 200px;
     width: 270px;
     position: absolute;
@@ -44,7 +45,18 @@
   #Home .comment-Body .container .btn-text {
     color: #909399;
   }
-
+  #Home .comment-Body .container a{
+    text-decoration-line: none;
+  }
+  #Home .comment-validator .el-card {
+    border-width: 0px;
+  }
+  #Home .comment-validator .el-input__inner{
+    box-shadow: inset 0px -2px 0px #c0c4cc;
+  }
+  #Home .comment-validator .el-card{
+    box-shadow:inset 0px -4px 0px #999;
+  }
 </style>
 <template>
   <div id="Home">
@@ -54,12 +66,12 @@
         <h1>宝儿后台管理系统</h1>
         <h2>更简洁、更直观、更迅捷</h2>
         <p>
-          <a class="btn-shadow">宝儿v2管理系统</a>
+          <router-link class="btn-shadow" to="{ name: 'User', params: { type: 'login' }}">宝儿v2管理系统</router-link>
         </p>
         <li style="list-style:none;">
-          <a class="btn-text" href="http://www.alibaba.com">宝儿v1管理系统</a>
+          <a class="btn-text" href="http://www.xiaobaods.com">宝儿v1管理系统</a>
         </li>
-      </div>
+        </div>
     </div>
     <commonFooter></commonFooter>
   </div>
@@ -72,11 +84,7 @@
       commonHeader,
       commonFooter
     },
-    name: "Home",
-    data() {
-      return {};
-    },
-    created() {},
+    name: "Home"
   };
 
 </script>

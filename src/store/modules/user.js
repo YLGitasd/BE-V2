@@ -1,5 +1,5 @@
 export const SET_USER = 'SET_USER'
-const state = {}
+const state = JSON.parse(sessionStorage.getItem('user')) || {}
 const mutations = {
   [SET_USER] (state, user) {
     sessionStorage.setItem('user', JSON.stringify(user))

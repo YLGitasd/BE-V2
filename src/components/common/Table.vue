@@ -5,6 +5,7 @@
 }
 .comment-table a:hover {
   color: rgba(3, 102, 204, 0.95);
+  text-decoration-line: none;
 }
 </style>
 <!--

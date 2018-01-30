@@ -13,15 +13,8 @@ export default new Router({
         require(['@/components/Home.vue'], resolve)
       }
     },
-    // {
-    //   path: 'home',
-    //   name: 'Home',
-    //   component: function (resolve) {
-    //     require(['@/components/Home.vue'], resolve)
-    //   }
-    // },
     {
-      path: '/user/:path',
+      path: '/user/:type',
       name: 'User',
       component: function (resolve) {
         require(['@/components/User.vue'], resolve)
@@ -79,9 +72,7 @@ export default new Router({
     },
     {
       path: '*',
-      component: function (resolve) {
-        require(['@/components/404page.vue'], resolve)
-      }
+      redirect: '/user/login'
     }
   ]
 })
