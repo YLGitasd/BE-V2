@@ -148,10 +148,6 @@ router.get('/weekreport', (req, res) => {
   pool.query('SELECT * FROM week_article ORDER BY id DESC', function (err, result) {
     if (err) throw (err)
     res.send(result)
-    // fileSystem.readFile('./server/markdown/' + result[0].name, function (err, data) {
-    //   if (err) throw (err)
-    //   res.send(data)
-    // })
   })
 })
 router.post('/qiniu/image', upload.single('image'), (req, res) => {
@@ -221,9 +217,9 @@ router.post('/weekreport/editor', (req, res) => {
 router.get('/weekreport/view', (req, resp) => {
   var filedate = moment(req.query.date).format('YYYY-MM-DD')
   var {title} = req.query
-  pool.query("SELECT name FROM week_article WHERE date = ? and title = ?",[filedate,title], function (err, result) {
+  pool.query("SELECT name,readers FROM week_article WHERE date = ? and title = ?",[filedate,title], function (err, result) {
     if (err) throw (err)
-    var urlsToPrefetch = 'http://owvh3ep5x.bkt.clouddn.com/' + Object.values(result[0])
+    var urlsToPrefetch = 'http://owvh3ep5x.bkt.clouddn.com/' + result[0].name
     http.get(urlsToPrefetch, (res) => {
       var rawData = ''
       res.setEncoding('utf8')
@@ -234,15 +230,14 @@ router.get('/weekreport/view', (req, resp) => {
         resp.send([title, rawData])
       })
     })
+    pool.query("UPDATE week_article SET `readers`=? WHERE date = ? and title = ?",[result[0].readers+1,filedate,title])
   })
 })
 router.get('/weekreport/switch', (req, resp) => {
   var {order} = req.query
-  console.log(order)
   pool.query("SELECT name FROM week_article WHERE id = ?",[order], function (err, result) {
     if (err) throw (err)
-    var urlsToPrefetch = 'http://owvh3ep5x.bkt.clouddn.com/' + Object.values(result[0])
-    console.log(urlsToPrefetch)
+    var urlsToPrefetch = 'http://owvh3ep5x.bkt.clouddn.com/' + result[0].name
     http.get(urlsToPrefetch, (res) => {
       var rawData = ''
       res.setEncoding('utf8')

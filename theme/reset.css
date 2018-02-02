@@ -116,15 +116,15 @@ body {
   color: #000; }
 
 a {
-  color: #24292E;
+  color: #24cced;
   text-decoration: none; }
   a:hover, a:focus {
-    color: #505458; }
+    color: #50d6f1; }
   a:active {
-    color: #202529; }
+    color: #20b8d5; }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #5a5e66;
+  color: #606266;
   font-weight: inherit; }
   h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child {
     margin-top: 0; }

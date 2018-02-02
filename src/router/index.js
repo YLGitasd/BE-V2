@@ -25,7 +25,7 @@ export default new Router({
       path: '/fullviews',
       name: 'StoreViews',
       component: function (resolve) {
-        require(['../components/page/Fullviews.vue'], resolve)
+        require(['@/components/page/Fullviews.vue'], resolve)
       }
     },
     {

@@ -45,7 +45,13 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     before(app) {
      app.use(history())
      app.use(cookieParser())
-     app.use(session({ secret: 'xiaobaods shujuzu', cookie: { maxAge: 14400000 }}))
+     app.use(session({
+        secret: 'xiaobaods shujuzu', 
+        cookie: { 
+          maxAge: 14400000 ,
+          secret:true
+          }
+     }))
      app.use(bodyParser.urlencoded({ extended: true, limit:'10mb'}))
      app.use(bodyParser.json({limit:'10mb'}))
      app.use(require('../server/index'))

@@ -22,8 +22,6 @@ module.exports.uploadImgFile = function (key,localFile,callback) {
   var formUploader = new qiniu.form_up.FormUploader(config);
   var putExtra = new qiniu.form_up.PutExtra();
 
-
-
   //file
   formUploader.putFile(uploadToken, key, localFile, putExtra, callback);
 }

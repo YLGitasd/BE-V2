@@ -141,7 +141,7 @@
           <el-table-column prop="editor" label="发布者"></el-table-column>
           <el-table-column prop="status" label="状态"></el-table-column>
           <el-table-column prop="verifier" label="审核人"></el-table-column>
-          <el-table-column prop="readers" label="阅读人数"></el-table-column>
+          <el-table-column prop="readers" label="阅读次数"></el-table-column>
         </el-table>
         <el-form v-show="showEditor" ref="form" :model="form" label-width="80px">
           <el-form-item label="文章标题">
@@ -184,8 +184,8 @@
 </template>
 <script>
 import commonHeader from "../common/Header.vue";
-import marked from "marked";
-import moment from "moment";
+import marked from "marked";//marked 为markedown格式化模块 https://www.npmjs.com/package/marked
+import moment from "moment";//时间插件http://momentjs.cn/
 export default {
   components: {
     commonHeader
@@ -233,6 +233,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$refs.md)
     this.$http.get("weekreport").then(response => {
       this.tableData = response.data;
     });
@@ -259,7 +260,7 @@ export default {
           increase: true,
           view: true,
           editor: true,
-          check: false
+          check: true
         };
       }
     },
@@ -283,6 +284,7 @@ export default {
     closeArticle() {
       this.showWraper = false;
       this.$refs.multipleTable.clearSelection();
+      this.order=0;
     },
     viewArticle() {
       var parms = this.selection[0];
@@ -302,6 +304,12 @@ export default {
     },
     checkArticle() {
       this.buttonGroup.text = "提交审阅";
+      var parms = this.selection[0];
+      this.$http.get("weekreport/view", { params: parms }).then(response => {
+        this.showEditor = true;
+        this.form.title = response.data[0];
+        this.form.mdString = response.data[1];
+      });
     },
     prevArticle() {
       ++this.order;
@@ -329,6 +337,7 @@ export default {
     submitForm() {
       // 提交文档信息到服务
       var information = this.$refs.form.model;
+      // console.log(this.$store.state.user)
       this.$http.post("weekreport/editor", information).then(response => {
         console.log(response);
       });
