@@ -41,7 +41,7 @@
     margin-right: 1rem;
   }
 
-  
+
   #fullviews .fullviews-list a {
     color: #0366d6;
     text-decoration-line: none;
@@ -244,12 +244,12 @@
             name: '休闲裤'
           }
         })
-      ]).then(this.$http.spread(function (acct, perms, cae) {
+      ]).then(this.$http.spread(function (acct, perms, cae) {//处理并发请求
         _this.listOption[0].data = Object.values(acct.data);
         _this.listOption[1].data = Object.values(perms.data);
         _this.listOption[2].data = Object.values(cae.data);
       }))
-      
+
     },
     methods: {
       tableDataList(name, date) {

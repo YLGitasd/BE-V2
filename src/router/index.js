@@ -26,14 +26,15 @@ export default new Router({
       name: 'StoreViews',
       component: function (resolve) {
         require(['@/components/page/Fullviews.vue'], resolve)
-      }
+      },
+      meta:{keepAlive:true}
     },
     {
       path: '/product',
       name: 'ProductTrend',
       component: function (resolve) {
         require(['@/components/page/Product.vue'], resolve)
-      }
+      },meta:{keepAlive:true}
     },
     {
       path: '/world',
