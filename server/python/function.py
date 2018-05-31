@@ -16,8 +16,8 @@ from dateutil.parser import parse
 from config import *
 
 
-def xiaobaods_a(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", length=7, SQL="xiaobaods",
-                table="bc_attribute_granularity_sales", variable="ÈÈÏúÅÅÃû", fillna="", debug=0, path="", keyword="ÈÕÆÚ£º",
+def xiaobaods_a(SQL_msg="", line_b=0, line_f=20, date="", category="Å£ï¿½Ð¿ï¿½", length=7, SQL="xiaobaods",
+                table="bc_attribute_granularity_sales", variable="ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", fillna="", debug=0, path="", keyword="ï¿½ï¿½ï¿½Ú£ï¿½",
                 rankl=0, rankm=0, titler="", storer="", v1l=0, v1m=0, v2l=0, v2m=0, v3l=0, v3m=0):
     '''
     # 2017-10-10 All rewrite
@@ -28,8 +28,8 @@ def xiaobaods_a(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", len
         line_b, line_f = line_f, line_b
     time_s = time.time()
     latest_date = datetime.datetime.today().date() - datetime.timedelta(1)
-    if category not in ["Å£×Ð¿ã", "´òµ×¿ã", "ÐÝÏÐ¿ã"]:
-        category = "Å£×Ð¿ã"
+    if category not in ["Å£ï¿½Ð¿ï¿½", "ï¿½ï¿½×¿ï¿½", "ï¿½ï¿½ï¿½Ð¿ï¿½"]:
+        category = "Å£ï¿½Ð¿ï¿½"
     if length > 14 or length < 3:
         length = 7
     if SQL not in SQL_msg:
@@ -39,23 +39,23 @@ def xiaobaods_a(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", len
     if date == "":
         date = latest_date
     else:
-        date = parse(date).date()  # ÐÞ¸ÄÈÕÆÚ¸ñÊ½
+        date = parse(date).date()  # ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½Ê½
     if table == "bc_attribute_granularity_sales":
-        sql_select_f = "SELECT CT.`Ö÷Í¼ËõÂÔÍ¼`,CT.`ÈÈÏúÅÅÃû`,CT.`ÉÌÆ·ÐÅÏ¢`,CT.`ËùÊôµêÆÌ`,CT.`Ö§¸¶×Ó¶©µ¥Êý`,CT.`½»Ò×Ôö³¤·ù¶È`," \
-                       "CT.`Ö§¸¶×ª»¯ÂÊÖ¸Êý`,CT.`±¦±´Á´½Ó`,CT.`µêÆÌÁ´½Ó`,CT.`²é¿´ÏêÇé`,CT.`Í¬¿î»õÔ´`"
-        if variable not in ["ÈÈÏúÅÅÃû", "Ö§¸¶×Ó¶©µ¥Êý", "½»Ò×Ôö³¤·ù¶È", "Ö§¸¶×ª»¯ÂÊÖ¸Êý"]:
-            variable = "ÈÈÏúÅÅÃû"
+        sql_select_f = "SELECT CT.`ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Í¼`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`ï¿½ï¿½Æ·ï¿½ï¿½Ï¢`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`Ö§ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`," \
+                       "CT.`Ö§ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`ï¿½é¿´ï¿½ï¿½ï¿½ï¿½`,CT.`Í¬ï¿½ï¿½ï¿½Ô´`"
+        if variable not in ["ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "Ö§ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "Ö§ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½"]:
+            variable = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
     elif table == "bc_attribute_granularity_visitor":
-        sql_select_f = "SELECT CT.`Ö÷Í¼ËõÂÔÍ¼`,CT.`ÈÈÏúÅÅÃû`,CT.`ÉÌÆ·ÐÅÏ¢`,CT.`ËùÊôµêÆÌ`,CT.`Á÷Á¿Ö¸Êý`,CT.`ËÑË÷ÈËÆø`,CT." \
-                       "`Ö§¸¶×Ó¶©µ¥Êý`,CT.`±¦±´Á´½Ó`,CT.`µêÆÌÁ´½Ó`,CT.`²é¿´ÏêÇé`,CT.`Í¬¿î»õÔ´`"
-        if variable not in ["ÈÈÏúÅÅÃû", "Á÷Á¿Ö¸Êý", "ËÑË÷ÈËÆø", "Ö§¸¶×Ó¶©µ¥Êý"]:
-            variable = "ÈÈÏúÅÅÃû"
+        sql_select_f = "SELECT CT.`ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Í¼`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`ï¿½ï¿½Æ·ï¿½ï¿½Ï¢`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT." \
+                       "`Ö§ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`ï¿½é¿´ï¿½ï¿½ï¿½ï¿½`,CT.`Í¬ï¿½ï¿½ï¿½Ô´`"
+        if variable not in ["ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "Ö§ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½ï¿½ï¿½"]:
+            variable = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
     # Try to connect with the mysql and back a date which minimum.
     try:
         conn = pymysql.connect(host=SQL_msg[SQL]["host"], port=int(SQL_msg[SQL]["port"]), user=SQL_msg[SQL]["user"],
                                 passwd=SQL_msg[SQL]["passwd"], charset=SQL_msg[SQL]["charset"], db=SQL_msg[SQL]["db"])
         cursor = conn.cursor()
-        cursor.execute("SELECT min(`ÈÕÆÚ`),max(`ÈÕÆÚ`) from " + table + " where `ÀàÄ¿`='" + category + "';")
+        cursor.execute("SELECT min(`ï¿½ï¿½ï¿½ï¿½`),max(`ï¿½ï¿½ï¿½ï¿½`) from " + table + " where `ï¿½ï¿½Ä¿`='" + category + "';")
         date_limit = cursor.fetchall()
         date_floor = date_limit[0][0]
         date_ceiling = date_limit[0][1]
@@ -72,18 +72,18 @@ def xiaobaods_a(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", len
     # Main program.
     sql_select_m = ""
     for i in range(length):
-        sql_select_m += ",MAX(CASE ST.ÈÕÆÚ WHEN " + str(date - datetime.timedelta(length - i - 1)).replace("-",
-                                        "") + " THEN ST." + variable + " ELSE NULL END) AS `ÈÕÆÚ£º" + str(
+        sql_select_m += ",MAX(CASE ST.ï¿½ï¿½ï¿½ï¿½ WHEN " + str(date - datetime.timedelta(length - i - 1)).replace("-",
+                                        "") + " THEN ST." + variable + " ELSE NULL END) AS `ï¿½ï¿½ï¿½Ú£ï¿½" + str(
             date - datetime.timedelta(length - i - 1)).replace("-", "") + "` "
     sql_select_re = ""
     if 0 < rankl <= 500:
-        sql_select_re += " AND CT.`ÈÈÏúÅÅÃû`>=" + str(rankl)
+        sql_select_re += " AND CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`>=" + str(rankl)
     if 0 < rankm <= 500:
-        sql_select_re += " AND CT.`ÈÈÏúÅÅÃû`<=" + str(rankm)
+        sql_select_re += " AND CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`<=" + str(rankm)
     if titler:
-        sql_select_re += " AND CT.`ÉÌÆ·ÐÅÏ¢` REGEXP('" + titler + "')"
+        sql_select_re += " AND CT.`ï¿½ï¿½Æ·ï¿½ï¿½Ï¢` REGEXP('" + titler + "')"
     if storer:
-        sql_select_re += " AND CT.`ËùÊôµêÆÌ` REGEXP('" + storer + "')"
+        sql_select_re += " AND CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½` REGEXP('" + storer + "')"
     if v1l != 0:
         sql_select_re += " AND " + sql_select_f.split(",")[4] + "<=" + str(v1l)
     if v1m != 0:
@@ -96,14 +96,14 @@ def xiaobaods_a(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", len
         sql_select_re += " AND " + sql_select_f.split(",")[6] + "<=" + str(v3l)
     if v3m != 0:
         sql_select_re += " AND " + sql_select_f.split(",")[6] + ">=" + str(v3m)
-    sql_select_b = "FROM " + table + " AS CT LEFT JOIN " + table + " AS ST ON CT.`±¦±´Á´½Ó` = ST.`±¦±´Á´½Ó` " \
-                                                                   "WHERE CT.`ÈÕÆÚ` = " + str(date).replace("-", "") \
-            + " AND CT.ÀàÄ¿ = '" + category + "' AND ST.ÈÕÆÚ >= " + str(date - datetime.timedelta(length)).replace("-",
-                                                     "") + " AND ST.ÀàÄ¿ = '" + category + "'" + sql_select_re
-    sql_select_e = " GROUP BY CT.`ÈÈÏúÅÅÃû`,CT.`" + variable + "` ORDER BY CT.`ÈÈÏúÅÅÃû` LIMIT " + str(line_b) + ","\
+    sql_select_b = "FROM " + table + " AS CT LEFT JOIN " + table + " AS ST ON CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½` = ST.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½` " \
+                                                                   "WHERE CT.`ï¿½ï¿½ï¿½ï¿½` = " + str(date).replace("-", "") \
+            + " AND CT.ï¿½ï¿½Ä¿ = '" + category + "' AND ST.ï¿½ï¿½ï¿½ï¿½ >= " + str(date - datetime.timedelta(length)).replace("-",
+                                                     "") + " AND ST.ï¿½ï¿½Ä¿ = '" + category + "'" + sql_select_re
+    sql_select_e = " GROUP BY CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`" + variable + "` ORDER BY CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½` LIMIT " + str(line_b) + ","\
                    + str(line_f-line_b) + ";"
-    sql_select_c = "SELECT COUNT(*) AS total FROM " + table + " AS CT WHERE CT.`ÈÕÆÚ` = " + str(date).replace("-", "") \
-            + " AND CT.ÀàÄ¿ = '" + category + "'" + sql_select_re + ";"
+    sql_select_c = "SELECT COUNT(*) AS total FROM " + table + " AS CT WHERE CT.`ï¿½ï¿½ï¿½ï¿½` = " + str(date).replace("-", "") \
+            + " AND CT.ï¿½ï¿½Ä¿ = '" + category + "'" + sql_select_re + ";"
     # read msg from Mysql
     conn = pymysql.connect(host=SQL_msg[SQL]["host"], port=int(SQL_msg[SQL]["port"]), user=SQL_msg[SQL]["user"],
                             passwd=SQL_msg[SQL]["passwd"], charset=SQL_msg[SQL]["charset"], db=SQL_msg[SQL]["db"])
@@ -125,32 +125,32 @@ def xiaobaods_a(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", len
     elif debug == 8:
         return df
     elif debug == 2:
-        print("- Running time£º%.4f s" % (time.time() - time_s))
-        print("- date£º%r \n- category£º%r \n- length£º%r \n- page: %r(%r-%r) \n- SQL£º%r \n- table: %r \n- variable£º%r"
-              " \n- debug£º%r \n- path: %r\n- keyword: %r" % (str(date), category, str(length), total, line_b, line_f, SQL,
+        print("- Running timeï¿½ï¿½%.4f s" % (time.time() - time_s))
+        print("- dateï¿½ï¿½%r \n- categoryï¿½ï¿½%r \n- lengthï¿½ï¿½%r \n- page: %r(%r-%r) \n- SQLï¿½ï¿½%r \n- table: %r \n- variableï¿½ï¿½%r"
+              " \n- debugï¿½ï¿½%r \n- path: %r\n- keyword: %r" % (str(date), category, str(length), total, line_b, line_f, SQL,
                                                           table, variable, debug, path, keyword))
     elif debug == 1:
-        print("- Running time£º%.4f s" % (time.time() - time_s))
+        print("- Running timeï¿½ï¿½%.4f s" % (time.time() - time_s))
         print("  SQL_choice: %r \n- category: %r \n- length: %r \n- date: %r \n- total_SQL: %r \n- SQL: %r" %
                 (SQL, category, str(length), str(date), sql_select_c, sql_select_f + sql_select_m +
                  sql_select_b + sql_select_e))
     elif debug == 9:
         import os
-        print("- Running time£º%.4f s" % (time.time() - time_s))
+        print("- Running timeï¿½ï¿½%.4f s" % (time.time() - time_s))
         path_default = os.path.join(os.path.expanduser("~"), 'Desktop')
         if not os.path.isdir(path):
             path = path_default
-        csv_filename = "¡¾Êý¾Ý×é¡¿[" + table.split("_")[
+        csv_filename = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é¡¿[" + table.split("_")[
             -1] + "_" + category + "_Top500" + "]" + variable + "_" + datetime.datetime.strftime(date, "%m%d") + "-" \
                        + str(length) + "_" + SQL + ".csv"
         try:
             df.to_csv(path + "\\" + csv_filename)
-            print("> Êä³öCSVÎÄ¼þ£º", path, ",", csv_filename)
+            print("> ï¿½ï¿½ï¿½CSVï¿½Ä¼ï¿½ï¿½ï¿½", path, ",", csv_filename)
         except Exception as e:
-            print("> Êä³öCSVÎÄ¼þÊ§°Ü£¬´íÎóÔ­Òò£º", e)
+            print("> ï¿½ï¿½ï¿½CSVï¿½Ä¼ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½", e)
 
 
-def xiaobaods_al(SQL_msg="", cid="", category="Å£×Ð¿ã", SQL="xiaobaods", table="bc_attribute_granularity_sales",
+def xiaobaods_al(SQL_msg="", cid="", category="Å£ï¿½Ð¿ï¿½", SQL="xiaobaods", table="bc_attribute_granularity_sales",
                 fillna="", debug=0, path=""):
     '''
     # 2017-11-06 For Spring.2018
@@ -162,18 +162,18 @@ def xiaobaods_al(SQL_msg="", cid="", category="Å£×Ð¿ã", SQL="xiaobaods", table="
         return None
     time_s = time.time()
     latest_date = datetime.datetime.today().date() - datetime.timedelta(1)
-    if category not in ["Å£×Ð¿ã", "´òµ×¿ã", "ÐÝÏÐ¿ã"]:
-        category = "Å£×Ð¿ã"
+    if category not in ["Å£ï¿½Ð¿ï¿½", "ï¿½ï¿½×¿ï¿½", "ï¿½ï¿½ï¿½Ð¿ï¿½"]:
+        category = "Å£ï¿½Ð¿ï¿½"
     if SQL not in SQL_msg:
         SQL = SQL_msg[0]
     if table not in ["bc_attribute_granularity_sales", "bc_attribute_granularity_visitor"]:
         table = "bc_attribute_granularity_sales"
     if table == "bc_attribute_granularity_sales":
-        sql_select = "SELECT `ÈÕÆÚ`,`ÈÈÏúÅÅÃû`,`ÉÌÆ·ÐÅÏ¢`,`Ö§¸¶×Ó¶©µ¥Êý`,`½»Ò×Ôö³¤·ù¶È`,`Ö§¸¶×ª»¯ÂÊÖ¸Êý`,`Ö÷Í¼ËõÂÔÍ¼` FROM " + table + \
-                       " where `ÀàÄ¿`='" + category + "' AND `±¦±´Á´½Ó` like '%id=" + cid + "';"
+        sql_select = "SELECT `ï¿½ï¿½ï¿½ï¿½`,`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,`ï¿½ï¿½Æ·ï¿½ï¿½Ï¢`,`Ö§ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½ï¿½ï¿½`,`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,`Ö§ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½`,`ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Í¼` FROM " + table + \
+                       " where `ï¿½ï¿½Ä¿`='" + category + "' AND `ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½` like '%id=" + cid + "';"
     elif table == "bc_attribute_granularity_visitor":
-        sql_select = "SELECT `ÈÕÆÚ`,`ÈÈÏúÅÅÃû`,`ÉÌÆ·ÐÅÏ¢`,`Á÷Á¿Ö¸Êý`,`ËÑË÷ÈËÆø`,`Ö§¸¶×Ó¶©µ¥Êý`,`Ö÷Í¼ËõÂÔÍ¼` FROM " + table + \
-                       " where `ÀàÄ¿`='" + category + "' AND `±¦±´Á´½Ó` like '%id=" + cid + "';"
+        sql_select = "SELECT `ï¿½ï¿½ï¿½ï¿½`,`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,`ï¿½ï¿½Æ·ï¿½ï¿½Ï¢`,`ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½`,`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,`Ö§ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½ï¿½ï¿½`,`ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Í¼` FROM " + table + \
+                       " where `ï¿½ï¿½Ä¿`='" + category + "' AND `ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½` like '%id=" + cid + "';"
     # read msg from Mysql
     conn = pymysql.connect(host=SQL_msg[SQL]["host"], port=int(SQL_msg[SQL]["port"]), user=SQL_msg[SQL]["user"],
                             passwd=SQL_msg[SQL]["passwd"], charset=SQL_msg[SQL]["charset"], db=SQL_msg[SQL]["db"])
@@ -189,51 +189,51 @@ def xiaobaods_al(SQL_msg="", cid="", category="Å£×Ð¿ã", SQL="xiaobaods", table="
             date += datetime.timedelta(1)
         return date_list
     # sort
-    df.sort_values(by=["ÈÕÆÚ"], inplace=True)
-    # ÖØ¸´Ïî´¦Àí
-    df["ÉÌÆ·ÐÅÏ¢"] = df["ÉÌÆ·ÐÅÏ¢"].apply(lambda s: s.split(" ¼Û¸ñ")[0])
-    df.loc[df["Ö÷Í¼ËõÂÔÍ¼"].duplicated(keep="first")==True, "Ö÷Í¼ËõÂÔÍ¼"] = np.nan
-    df.loc[df["ÉÌÆ·ÐÅÏ¢"].duplicated(keep="first")==True, "ÉÌÆ·ÐÅÏ¢"] = np.nan
-    # Ê±¼äÐòÁÐÍØÕ¹
-    date_list = creation_date_list(min(df["ÈÕÆÚ"]), max(df["ÈÕÆÚ"]))
-    df1 = pd.DataFrame(date_list, columns=["ÈÕÆÚ"])
-    df = pd.merge(df1, df, how="outer", left_on="ÈÕÆÚ", right_on="ÈÕÆÚ")
-    # Ê±¼äÐòÁÐ¿ØÖÆ´¦Àí
-    df.loc[:, "ÈÈÏúÅÅÃû"].fillna(501, inplace=True)
+    df.sort_values(by=["ï¿½ï¿½ï¿½ï¿½"], inplace=True)
+    # ï¿½Ø¸ï¿½ï¿½î´¦ï¿½ï¿½
+    df["ï¿½ï¿½Æ·ï¿½ï¿½Ï¢"] = df["ï¿½ï¿½Æ·ï¿½ï¿½Ï¢"].apply(lambda s: s.split(" ï¿½Û¸ï¿½")[0])
+    df.loc[df["ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Í¼"].duplicated(keep="first")==True, "ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Í¼"] = np.nan
+    df.loc[df["ï¿½ï¿½Æ·ï¿½ï¿½Ï¢"].duplicated(keep="first")==True, "ï¿½ï¿½Æ·ï¿½ï¿½Ï¢"] = np.nan
+    # Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹
+    date_list = creation_date_list(min(df["ï¿½ï¿½ï¿½ï¿½"]), max(df["ï¿½ï¿½ï¿½ï¿½"]))
+    df1 = pd.DataFrame(date_list, columns=["ï¿½ï¿½ï¿½ï¿½"])
+    df = pd.merge(df1, df, how="outer", left_on="ï¿½ï¿½ï¿½ï¿½", right_on="ï¿½ï¿½ï¿½ï¿½")
+    # Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½Æ´ï¿½ï¿½ï¿½
+    df.loc[:, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"].fillna(501, inplace=True)
     if fillna == "":
-        df.loc[:, "ÉÌÆ·ÐÅÏ¢"].fillna("-", inplace=True)
-        df.loc[:, "Ö÷Í¼ËõÂÔÍ¼"].fillna("-", inplace=True)
+        df.loc[:, "ï¿½ï¿½Æ·ï¿½ï¿½Ï¢"].fillna("-", inplace=True)
+        df.loc[:, "ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Í¼"].fillna("-", inplace=True)
     else:
-        df.loc[:, "ÉÌÆ·ÐÅÏ¢"].fillna(fillna, inplace=True)
-        df.loc[:, "Ö÷Í¼ËõÂÔÍ¼"].fillna(fillna, inplace=True)
+        df.loc[:, "ï¿½ï¿½Æ·ï¿½ï¿½Ï¢"].fillna(fillna, inplace=True)
+        df.loc[:, "ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Í¼"].fillna(fillna, inplace=True)
     df.fillna(0, inplace=True)
     if debug not in [1, 2, 8, 9]:
         print(df.to_json(orient="index"))
     elif debug == 8:
         return df
     elif debug == 1 or debug == 2:
-        print("- Running time£º%.4f s" % (time.time() - time_s))
-        print("- cid£º%r \n- category£º%r \n- SQL£º%r \n- table: %r \n- variable£º%r"
-              " \n- debug£º%r \n- path: %r" % (cid, category, SQL, table, debug, path))
+        print("- Running timeï¿½ï¿½%.4f s" % (time.time() - time_s))
+        print("- cidï¿½ï¿½%r \n- categoryï¿½ï¿½%r \n- SQLï¿½ï¿½%r \n- table: %r \n- variableï¿½ï¿½%r"
+              " \n- debugï¿½ï¿½%r \n- path: %r" % (cid, category, SQL, table, debug, path))
     elif debug == 9:
         import os
-        print("- Running time£º%.4f s" % (time.time() - time_s))
+        print("- Running timeï¿½ï¿½%.4f s" % (time.time() - time_s))
         path_default = os.path.join(os.path.expanduser("~"), 'Desktop')
         if not os.path.isdir(path):
             path = path_default
-        csv_filename = "¡¾Êý¾Ý×é¡¿[" + table.split("_")[
+        csv_filename = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é¡¿[" + table.split("_")[
             -1] + "_ID:" + cid + "_Top500_Data" + "]" + datetime.datetime.strftime(datetime.date.today(),"%Y-%m-%d") + \
                        "_" + SQL + ".csv"
         try:
             df.to_csv(path + "\\" + csv_filename)
-            print("> Êä³öCSVÎÄ¼þ£º", path, ",", csv_filename)
+            print("> ï¿½ï¿½ï¿½CSVï¿½Ä¼ï¿½ï¿½ï¿½", path, ",", csv_filename)
         except Exception as e:
-            print("> Êä³öCSVÎÄ¼þÊ§°Ü£¬´íÎóÔ­Òò£º", e)
+            print("> ï¿½ï¿½ï¿½CSVï¿½Ä¼ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½", e)
 
 
-def xiaobaods_c(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", classification="¿îÊ½", attributes="Ç¦±Ê¿ã",
+def xiaobaods_c(SQL_msg="", line_b=0, line_f=20, date="", category="Å£ï¿½Ð¿ï¿½", classification="ï¿½ï¿½Ê½", attributes="Ç¦ï¿½Ê¿ï¿½",
                 length=7, SQL="xiaobaods",
-                table="bc_attribute_granularity_sales", variable="ÈÈÏúÅÅÃû", fillna="", debug=0, path="", keyword="ÈÕÆÚ£º",
+                table="bc_attribute_granularity_sales", variable="ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", fillna="", debug=0, path="", keyword="ï¿½ï¿½ï¿½Ú£ï¿½",
                 rankl=0, rankm=0, titler="", storer="", v1l=0, v1m=0, v2l=0, v2m=0, v3l=0, v3m=0):
     '''
     # 2017-10-18 All rewrite
@@ -246,29 +246,29 @@ def xiaobaods_c(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", cla
     latest_date = datetime.datetime.today().date() - datetime.timedelta(1)
     if (category not in goal) or (classification not in goal[category]) or \
             (attributes not in goal[category][classification]):
-        category = "Å£×Ð¿ã"
-        classification = "¿îÊ½"
-        attributes = "Ç¦±Ê¿ã"
+        category = "Å£ï¿½Ð¿ï¿½"
+        classification = "ï¿½ï¿½Ê½"
+        attributes = "Ç¦ï¿½Ê¿ï¿½"
     if length > 14 or length < 3:
         length = 7
     if SQL not in SQL_msg:
         SQL = SQL_msg[0]
     table = "bc_category_granularity"
-    sql_select_f = "SELECT CT.`Ö÷Í¼ËõÂÔÍ¼`,CT.`ÈÈÏúÅÅÃû`,CT.`ÉÌÆ·ÐÅÏ¢`,CT.`ËùÊôµêÆÌ`,CT.`Ö§¸¶×Ó¶©µ¥Êý`,CT.`Ö§¸¶¼þÊý`," \
-                   "CT.`Ö§¸¶×ª»¯ÂÊÖ¸Êý`,CT.`±¦±´Á´½Ó`,CT.`µêÆÌÁ´½Ó`,CT.`²é¿´ÏêÇé`"
+    sql_select_f = "SELECT CT.`ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Í¼`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`ï¿½ï¿½Æ·ï¿½ï¿½Ï¢`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`Ö§ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`Ö§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`," \
+                   "CT.`Ö§ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`ï¿½é¿´ï¿½ï¿½ï¿½ï¿½`"
     if date == "":
         date = latest_date
     else:
-        date = parse(date).date()  # ÐÞ¸ÄÈÕÆÚ¸ñÊ½
-    if variable not in ["ÈÈÏúÅÅÃû", "Ö§¸¶×Ó¶©µ¥Êý", "Ö§¸¶¼þÊý", "Ö§¸¶×ª»¯ÂÊÖ¸Êý"]:
-        variable = "ÈÈÏúÅÅÃû"
+        date = parse(date).date()  # ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½Ê½
+    if variable not in ["ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "Ö§ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½ï¿½ï¿½", "Ö§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "Ö§ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½"]:
+        variable = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
     # Try to connect with the mysql and back a date which minimum.
     try:
         conn = pymysql.connect(host=SQL_msg[SQL]["host"], port=int(SQL_msg[SQL]["port"]), user=SQL_msg[SQL]["user"],
                                passwd=SQL_msg[SQL]["passwd"], charset=SQL_msg[SQL]["charset"], db=SQL_msg[SQL]["db"])
         cursor = conn.cursor()
-        cursor.execute("SELECT min(`ÈÕÆÚ`),max(`ÈÕÆÚ`) from "+table+" where `ÀàÄ¿`='"+category+"' "
-                                                        "and `ÀàÐÍ`='"+classification+"' and `ÊôÐÔ`='"+attributes+"';")
+        cursor.execute("SELECT min(`ï¿½ï¿½ï¿½ï¿½`),max(`ï¿½ï¿½ï¿½ï¿½`) from "+table+" where `ï¿½ï¿½Ä¿`='"+category+"' "
+                                                        "and `ï¿½ï¿½ï¿½ï¿½`='"+classification+"' and `ï¿½ï¿½ï¿½ï¿½`='"+attributes+"';")
         date_limit = cursor.fetchall()
         date_floor = date_limit[0][0]
         date_ceiling = date_limit[0][1]
@@ -285,18 +285,18 @@ def xiaobaods_c(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", cla
     # Main program.
     sql_select_m = ""
     for i in range(length):
-        sql_select_m += ",MAX(CASE ST.ÈÕÆÚ WHEN " + str(date - datetime.timedelta(length - i - 1)).replace("-",
-                                                "") + " THEN ST." + variable + " ELSE NULL END) AS `ÈÕÆÚ£º" + str(
+        sql_select_m += ",MAX(CASE ST.ï¿½ï¿½ï¿½ï¿½ WHEN " + str(date - datetime.timedelta(length - i - 1)).replace("-",
+                                                "") + " THEN ST." + variable + " ELSE NULL END) AS `ï¿½ï¿½ï¿½Ú£ï¿½" + str(
             date - datetime.timedelta(length - i - 1)).replace("-", "") + "` "
     sql_select_re = ""
     if 0 < rankl <= 500:
-        sql_select_re += " AND CT.`ÈÈÏúÅÅÃû`>=" + str(rankl)
+        sql_select_re += " AND CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`>=" + str(rankl)
     if 0 < rankm <= 500:
-        sql_select_re += " AND CT.`ÈÈÏúÅÅÃû`<=" + str(rankm)
+        sql_select_re += " AND CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`<=" + str(rankm)
     if titler:
-        sql_select_re += " AND CT.`ÉÌÆ·ÐÅÏ¢` REGEXP('" + titler + "')"
+        sql_select_re += " AND CT.`ï¿½ï¿½Æ·ï¿½ï¿½Ï¢` REGEXP('" + titler + "')"
     if storer:
-        sql_select_re += " AND CT.`ËùÊôµêÆÌ` REGEXP('" + storer + "')"
+        sql_select_re += " AND CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½` REGEXP('" + storer + "')"
     if v1l != 0:
         sql_select_re += " AND " + sql_select_f.split(",")[4] + "<=" + str(v1l)
     if v1m != 0:
@@ -309,15 +309,15 @@ def xiaobaods_c(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", cla
         sql_select_re += " AND " + sql_select_f.split(",")[6] + "<=" + str(v3l)
     if v3m != 0:
         sql_select_re += " AND " + sql_select_f.split(",")[6] + ">=" + str(v3m)
-    sql_select_b = "FROM " + table + " AS CT LEFT JOIN " + table + " AS ST ON CT.`±¦±´Á´½Ó` = ST.`±¦±´Á´½Ó` " \
-                                                                   "WHERE CT.`ÈÕÆÚ` = " + str(date).replace("-", "") \
-            + " AND CT.ÀàÄ¿ = '" + category + "' AND CT.ÀàÐÍ = '"+classification+"' AND CT.ÊôÐÔ = '"+attributes+"' " \
-                "AND ST.ÈÕÆÚ >= " + str(date - datetime.timedelta(length)).replace("-", "") + " AND " \
-        "ST.ÀàÄ¿ = '" + category + "' AND ST.ÀàÐÍ = '"+classification+"' AND ST.ÊôÐÔ = '"+attributes+"'" + sql_select_re
-    sql_select_e = " GROUP BY CT.`ÈÈÏúÅÅÃû`,CT.`" + variable + "` ORDER BY CT.`ÈÈÏúÅÅÃû` LIMIT " + str(line_b) + ","\
+    sql_select_b = "FROM " + table + " AS CT LEFT JOIN " + table + " AS ST ON CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½` = ST.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½` " \
+                                                                   "WHERE CT.`ï¿½ï¿½ï¿½ï¿½` = " + str(date).replace("-", "") \
+            + " AND CT.ï¿½ï¿½Ä¿ = '" + category + "' AND CT.ï¿½ï¿½ï¿½ï¿½ = '"+classification+"' AND CT.ï¿½ï¿½ï¿½ï¿½ = '"+attributes+"' " \
+                "AND ST.ï¿½ï¿½ï¿½ï¿½ >= " + str(date - datetime.timedelta(length)).replace("-", "") + " AND " \
+        "ST.ï¿½ï¿½Ä¿ = '" + category + "' AND ST.ï¿½ï¿½ï¿½ï¿½ = '"+classification+"' AND ST.ï¿½ï¿½ï¿½ï¿½ = '"+attributes+"'" + sql_select_re
+    sql_select_e = " GROUP BY CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`,CT.`" + variable + "` ORDER BY CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½` LIMIT " + str(line_b) + ","\
                    + str(line_f-line_b) + ";"
-    sql_select_c = "SELECT COUNT(*) AS total FROM " + table + " AS CT WHERE CT.`ÈÕÆÚ` = " + str(date).replace("-", "") \
-            + " AND CT.ÀàÄ¿ = '" + category + " 'AND CT.ÀàÐÍ = '"+classification+"' AND CT.ÊôÐÔ = '"+attributes+"'" + \
+    sql_select_c = "SELECT COUNT(*) AS total FROM " + table + " AS CT WHERE CT.`ï¿½ï¿½ï¿½ï¿½` = " + str(date).replace("-", "") \
+            + " AND CT.ï¿½ï¿½Ä¿ = '" + category + " 'AND CT.ï¿½ï¿½ï¿½ï¿½ = '"+classification+"' AND CT.ï¿½ï¿½ï¿½ï¿½ = '"+attributes+"'" + \
                    sql_select_re + ";"
     # read msg from Mysql
     conn = pymysql.connect(host=SQL_msg[SQL]["host"], port=int(SQL_msg[SQL]["port"]), user=SQL_msg[SQL]["user"],
@@ -340,35 +340,35 @@ def xiaobaods_c(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", cla
     elif debug == 8:
         return df
     elif debug == 2:
-        print("- Running time£º%.4f s" % (time.time() - time_s))
-        print("- date£º%r \n- category£º%r \n- classification: %r \n- attributes: %r \n- length£º%r \n- page: %r(%r-%r) "
-              "\n- SQL£º%r \n- table: %r \n- variable£º%r"
-              " \n- debug£º%r \n- path: %r\n- keyword: %r" % (str(date), category, classification, attributes,
+        print("- Running timeï¿½ï¿½%.4f s" % (time.time() - time_s))
+        print("- dateï¿½ï¿½%r \n- categoryï¿½ï¿½%r \n- classification: %r \n- attributes: %r \n- lengthï¿½ï¿½%r \n- page: %r(%r-%r) "
+              "\n- SQLï¿½ï¿½%r \n- table: %r \n- variableï¿½ï¿½%r"
+              " \n- debugï¿½ï¿½%r \n- path: %r\n- keyword: %r" % (str(date), category, classification, attributes,
                                                              str(length), total, line_b, line_f, SQL,
                                                           table, variable, debug, path, keyword))
     elif debug == 1:
-        print("- Running time£º%.4f s" % (time.time() - time_s))
+        print("- Running timeï¿½ï¿½%.4f s" % (time.time() - time_s))
         print("  SQL_choice: %r \n- category: %r \n- classification: %r \n- attributes: %r \n- length: %r \n- date: %r "
               "\n- total_SQL: %r \n- SQL: %r" %
                 (SQL, category, classification, attributes, str(length), str(date), sql_select_c, sql_select_f +
                  sql_select_m + sql_select_b + sql_select_e))
     elif debug == 9:
         import os
-        print ("- Running time£º%.4f s" % (time.time()-time_s))
+        print ("- Running timeï¿½ï¿½%.4f s" % (time.time()-time_s))
         path_default = os.path.join(os.path.expanduser("~"), 'Desktop')
         if not os.path.isdir(path):
             path = path_default
-        csv_filename = "¡¾Êý¾Ý×é¡¿["+table.split("_")[1]+"_"+category+"_"+classification+"_"+attributes+"]"+variable+"_"\
+        csv_filename = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é¡¿["+table.split("_")[1]+"_"+category+"_"+classification+"_"+attributes+"]"+variable+"_"\
                      + datetime.datetime.strftime(date, "%m%d")+"-"+str(length)+"_"+SQL+".csv"
         try:
             df.to_csv(path+"\\"+csv_filename)
-            print("> Êä³öCSVÎÄ¼þ£º", path, ",", csv_filename)
+            print("> ï¿½ï¿½ï¿½CSVï¿½Ä¼ï¿½ï¿½ï¿½", path, ",", csv_filename)
         except Exception as e:
-            print("> Êä³öCSVÎÄ¼þÊ§°Ü£¬´íÎóÔ­Òò£º", e)
+            print("> ï¿½ï¿½ï¿½CSVï¿½Ä¼ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½", e)
 
 
-def xiaobaods_w(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", length=7,SQL="xiaobaods",choice="ÈÈËÑºËÐÄ´Ê",
-                variable="ÅÅÃû", fillna="", debug=0, path="", keyword="ÈÕÆÚ£º", rankl=0, rankm=0, titler="",
+def xiaobaods_w(SQL_msg="", line_b=0, line_f=20, date="", category="Å£ï¿½Ð¿ï¿½", length=7,SQL="xiaobaods",choice="ï¿½ï¿½ï¿½Ñºï¿½ï¿½Ä´ï¿½",
+                variable="ï¿½ï¿½ï¿½ï¿½", fillna="", debug=0, path="", keyword="ï¿½ï¿½ï¿½Ú£ï¿½", rankl=0, rankm=0, titler="",
                 v1l=0, v1m=0, v2l=0, v2m=0, v3l=0, v3m=0, v4l=0, v4m=0, v5l=0, v5m=0, v6l=0, v6m=0):
     '''
     # 2017-10-19 All rewrite
@@ -377,28 +377,28 @@ def xiaobaods_w(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", len
         line_b, line_f = line_f, line_b
     time_s = time.time()
     latest_date = datetime.datetime.today().date()-datetime.timedelta(1)
-    if category not in ["Å£×Ð¿ã", "´òµ×¿ã", "ÐÝÏÐ¿ã"]:
-        category = "Å£×Ð¿ã"
+    if category not in ["Å£ï¿½Ð¿ï¿½", "ï¿½ï¿½×¿ï¿½", "ï¿½ï¿½ï¿½Ð¿ï¿½"]:
+        category = "Å£ï¿½Ð¿ï¿½"
     if length > 30 or length < 3:
         length = 7
     if SQL not in SQL_msg:
         SQL = SQL_msg[0]
     if choice not in choice_list:
-        choice = "ÈÈËÑÐÞÊÎ´Ê"
+        choice = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½"
     if variable not in choice_list[choice]["variable"]:
-        variable = "ÅÅÃû"
+        variable = "ï¿½ï¿½ï¿½ï¿½"
     if date == "":
         date = latest_date
     else:
-        date = parse(date).date()  # ÐÞ¸ÄÈÕÆÚ¸ñÊ½
+        date = parse(date).date()  # ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½Ê½
     # Try to connect with the mysql and back a date which minimum.
     try:
         conn = pymysql.connect(host=SQL_msg[SQL]["host"], port=int(SQL_msg[SQL]["port"]), user=SQL_msg[SQL]["user"],
                                passwd=SQL_msg[SQL]["passwd"],
                                charset=SQL_msg[SQL]["charset"], db=SQL_msg[SQL]["db"])
         cursor = conn.cursor()
-        cursor.execute("SELECT min(`ÈÕÆÚ`),max(`ÈÕÆÚ`) from " + choice_list[choice]["table"] + " where `ÀàÄ¿`='" +
-                       category + "' and `×Ö¶Î`='" + choice + "';")
+        cursor.execute("SELECT min(`ï¿½ï¿½ï¿½ï¿½`),max(`ï¿½ï¿½ï¿½ï¿½`) from " + choice_list[choice]["table"] + " where `ï¿½ï¿½Ä¿`='" +
+                       category + "' and `ï¿½Ö¶ï¿½`='" + choice + "';")
         date_limit = cursor.fetchall()
         date_floor = date_limit[0][0]
         date_ceiling = date_limit[0][1]
@@ -413,21 +413,21 @@ def xiaobaods_w(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", len
     if date < date_floor + datetime.timedelta(length-1):
         date = date_floor + datetime.timedelta(length-1)
     # Main program.
-    sql_select_f = "SELECT CT.`ÅÅÃû`,CT.`ËÑË÷´Ê`"
+    sql_select_f = "SELECT CT.`ï¿½ï¿½ï¿½ï¿½`,CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`"
     for i in range(len(choice_list[choice]["variable"])):
         sql_select_f += ",CT.`"+choice_list[choice]["variable"][i]+"`"
     sql_select_m = ""
     for i in range(length):
-        sql_select_m += ",MAX(CASE ST.ÈÕÆÚ WHEN " + str(date - datetime.timedelta(length-i-1)).replace("-", "") + \
+        sql_select_m += ",MAX(CASE ST.ï¿½ï¿½ï¿½ï¿½ WHEN " + str(date - datetime.timedelta(length-i-1)).replace("-", "") + \
                         " THEN ST." + variable + " ELSE NULL END) AS `" + keyword + \
                         str(date - datetime.timedelta(length-i-1)).replace("-", "")+"` "
     sql_select_re = ""
     if 0 < rankl <= 500:
-        sql_select_re += " AND CT.`ÅÅÃû`>=" + str(rankl)
+        sql_select_re += " AND CT.`ï¿½ï¿½ï¿½ï¿½`>=" + str(rankl)
     if 0 < rankm <= 500:
-        sql_select_re += " AND CT.`ÅÅÃû`<=" + str(rankm)
+        sql_select_re += " AND CT.`ï¿½ï¿½ï¿½ï¿½`<=" + str(rankm)
     if titler:
-        sql_select_re += " AND CT.`ËÑË÷´Ê` REGEXP('" + titler + "')"
+        sql_select_re += " AND CT.`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½` REGEXP('" + titler + "')"
     if v1l != 0:
         sql_select_re += " AND " + sql_select_f.split(",")[2] + "<=" + str(v1l)
     if v1m != 0:
@@ -453,14 +453,14 @@ def xiaobaods_w(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", len
     if v6m != 0:
         sql_select_re += " AND " + sql_select_f.split(",")[7] + ">=" + str(v6m)
     sql_select_b = "FROM " + choice_list[choice]["table"] + " AS CT LEFT JOIN " + choice_list[choice]["table"] + \
-                   " AS ST ON CT.ËÑË÷´Ê = ST.ËÑË÷´Ê WHERE CT.`ÈÕÆÚ` = "+str(date).replace("-", "")+" AND CT.ÀàÄ¿ = '" + \
-                   category + "' AND CT.×Ö¶Î='"+choice + "' AND ST.×Ö¶Î='" + choice + "' AND ST.ÈÕÆÚ >= " + \
-                   str(date - datetime.timedelta(length)).replace("-", "") + " AND ST.ÀàÄ¿ = '" + category + "'" + \
+                   " AS ST ON CT.ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ = ST.ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ WHERE CT.`ï¿½ï¿½ï¿½ï¿½` = "+str(date).replace("-", "")+" AND CT.ï¿½ï¿½Ä¿ = '" + \
+                   category + "' AND CT.ï¿½Ö¶ï¿½='"+choice + "' AND ST.ï¿½Ö¶ï¿½='" + choice + "' AND ST.ï¿½ï¿½ï¿½ï¿½ >= " + \
+                   str(date - datetime.timedelta(length)).replace("-", "") + " AND ST.ï¿½ï¿½Ä¿ = '" + category + "'" + \
                    sql_select_re
-    sql_select_e = " GROUP BY CT.`ÅÅÃû`,CT.`" + variable + "` ORDER BY CT.`ÅÅÃû` LIMIT " + str(line_b) + ","\
+    sql_select_e = " GROUP BY CT.`ï¿½ï¿½ï¿½ï¿½`,CT.`" + variable + "` ORDER BY CT.`ï¿½ï¿½ï¿½ï¿½` LIMIT " + str(line_b) + ","\
                    + str(line_f-line_b) + ";"
-    sql_select_c = "SELECT COUNT(*) AS total FROM " + choice_list[choice]["table"] + " AS CT WHERE CT.`ÈÕÆÚ` = " + str(date).replace("-", "") \
-            + " AND CT.ÀàÄ¿ = '" + category + "' AND CT.×Ö¶Î='" + choice + "'" + sql_select_re + ";"
+    sql_select_c = "SELECT COUNT(*) AS total FROM " + choice_list[choice]["table"] + " AS CT WHERE CT.`ï¿½ï¿½ï¿½ï¿½` = " + str(date).replace("-", "") \
+            + " AND CT.ï¿½ï¿½Ä¿ = '" + category + "' AND CT.ï¿½Ö¶ï¿½='" + choice + "'" + sql_select_re + ";"
     # Return parameter
     if debug == 7:
         return {"SQL_choice": SQL, "category": category, "length": str(length), "date": str(date), "SQL":
@@ -486,28 +486,28 @@ def xiaobaods_w(SQL_msg="", line_b=0, line_f=20, date="", category="Å£×Ð¿ã", len
     if debug not in [1, 2, 8, 9]:
         print(df.to_json(orient="index"))
     elif debug == 1:
-        print("- Running time£º%.4f s" % (time.time()-time_s))
+        print("- Running timeï¿½ï¿½%.4f s" % (time.time()-time_s))
         print("  SQL_choice: %r \n- category: %r \n- length: %r \n- date: %r\n- total_SQL: %r \n- SQL: %r" %
               (SQL, category, str(length), str(date), sql_select_c, sql_select_f + sql_select_m +
                sql_select_b + sql_select_e))
     elif debug == 2:
-        print("- Running time£º%.4f s" % (time.time()-time_s))
-        print("- date£º%r \n- category£º%r \n- length£º%r \n- SQL£º%r \n- choice: %r \n- table: %r \n- variable£º%r \n"
-              "- fillna: %r \n- debug£º%r \n- path: %r\n- keyword: %r" % (str(date), category, str(length), SQL, choice,
+        print("- Running timeï¿½ï¿½%.4f s" % (time.time()-time_s))
+        print("- dateï¿½ï¿½%r \n- categoryï¿½ï¿½%r \n- lengthï¿½ï¿½%r \n- SQLï¿½ï¿½%r \n- choice: %r \n- table: %r \n- variableï¿½ï¿½%r \n"
+              "- fillna: %r \n- debugï¿½ï¿½%r \n- path: %r\n- keyword: %r" % (str(date), category, str(length), SQL, choice,
                                             choice_list[choice]["table"], variable, fillna, debug, path, keyword))
     elif debug == 8:
         return df
     elif debug == 9:
         import os
-        print("- Running time£º%.4f s" % (time.time()-time_s))
+        print("- Running timeï¿½ï¿½%.4f s" % (time.time()-time_s))
         path_default = os.path.join(os.path.expanduser("~"), 'Desktop')
         if not os.path.isdir(path):
             path = path_default
-        csv_filename = "¡¾Êý¾Ý×é¡¿["+choice_list[choice]["table"].split("_")[-1] + "_" + category + "_" + choice + "]" + \
+        csv_filename = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é¡¿["+choice_list[choice]["table"].split("_")[-1] + "_" + category + "_" + choice + "]" + \
                      variable + "_" + datetime.datetime.strftime(date, "%m%d") + "-" + str(length) + "_" + SQL + ".csv"
         try:
             df.to_csv(path+"\\"+csv_filename)
-            print("> Êä³öCSVÎÄ¼þ£º", path, ",", csv_filename)
+            print("> ï¿½ï¿½ï¿½CSVï¿½Ä¼ï¿½ï¿½ï¿½", path, ",", csv_filename)
         except Exception as e:
-            print("> Êä³öCSVÎÄ¼þÊ§°Ü£¬´íÎóÔ­Òò£º", e)
+            print("> ï¿½ï¿½ï¿½CSVï¿½Ä¼ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½", e)
 

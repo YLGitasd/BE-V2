@@ -34,7 +34,7 @@ export default new Router({
       name: 'ProductTrend',
       component: function (resolve) {
         require(['@/components/page/Product.vue'], resolve)
-      },meta:{keepAlive:true}
+      }
     },
     {
       path: '/world',

@@ -63,6 +63,7 @@ router.get('/product', (req, res) => {
   })
   const data = JSON.parse(spawnSync1.stdout)
   res.send(data)
+  console.log(data)
 })
 router.get('/world', (req, res) => {
     const {
@@ -277,7 +278,7 @@ router.get('/property-deal-list', (req, res) => {
   const spawnSync1 = spawnSync('python', ['xiaobaods_e.py', string],{cwd:'./server/python'})
   var data = JSON.parse(spawnSync1.stdout)
   var size = Buffer.byteLength(spawnSync1.stdout)
-  
+
   res.send({
     size:size,
     data: data
@@ -303,7 +304,7 @@ router.get('/property-deal-trend', (req, res) => {
     var data0 = JSON.parse(spawnSync0.stdout)
     var data1 = JSON.parse(spawnSync1.stdout)
     var data2 = JSON.parse(spawnSync2.stdout)
- 
+
     res.send({
       data0: data0,
       data1: data1,

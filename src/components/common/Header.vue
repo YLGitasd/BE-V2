@@ -29,7 +29,7 @@
   .user-info span{
     font-size: 14px;
     display: inline-block;
-    padding: 4px 10px; 
+    padding: 4px 10px;
     border-radius:6px;
   }
   .user-log{
@@ -118,7 +118,7 @@
         console.log(key, keyPath);
       },
       signRegUser(){
-        
+
       },
       signLogUser(){
 
